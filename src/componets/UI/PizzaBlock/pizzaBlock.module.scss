@@ -1,0 +1,56 @@
+
+.wrapper{
+  display: flex;
+  justify-content: center;
+
+}
+
+.pizzaBlock {
+  width: 280px;
+  text-align: center;
+  margin: 0 0 65px 7px;
+  .cu{
+    cursor: pointer;
+  }
+}
+
+.image {
+  width: 280px;
+  transition: transform 0.2s ease-in-out;
+  fill: #fd0000;
+  cursor: pointer;
+
+
+  &:hover{
+    transform: translateY(6px);
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.text{
+  text-align: left;
+  height: 65px;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: 0.015em;
+}
+
+
+

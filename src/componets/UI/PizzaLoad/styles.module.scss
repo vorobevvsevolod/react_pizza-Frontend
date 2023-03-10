@@ -1,0 +1,83 @@
+.wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+.pizzaBlock{
+  width: 280px;
+  text-align: center;
+  margin: 0 0 65px 7px;
+}
+.image{
+  animation: animation infinite 5s ease-in-out;
+  @keyframes animation {
+    0%{
+      transform: rotate(0);
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.title{
+  width: 100%;
+  height: 27px;
+  background: linear-gradient(315deg, #c2c2c2, #e3e3e3, #c2c2c2);
+  animation: gradientAnimation 3s ease-in-out infinite;
+  background-size: 300% 300%;
+  display: block;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.text{
+  display: block;
+  width: 100%;
+  height: 65px;
+  background: linear-gradient(315deg, #c2c2c2, #e3e3e3, #c2c2c2);
+  animation: gradientAnimation 3s ease-in-out infinite;
+  background-size: 300% 300%;
+  border-radius: 6px;
+}
+
+.bottom{
+  width: 100%;
+  height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  display: flex;
+
+  &_price{
+    display: block;
+    width: 90px;
+    height: 27px;
+    background: linear-gradient(315deg, #c2c2c2, #e3e3e3, #c2c2c2);
+    animation: gradientAnimation 3s ease-in-out infinite;
+    background-size: 300% 300%;
+    border-radius: 6px;
+  }
+
+  &_button{
+    display: block;
+    width: 155px;
+    height: 56px;
+    background: linear-gradient(315deg, #c2c2c2, #e3e3e3, #c2c2c2);
+    animation: gradientAnimation 3s ease-in-out infinite;
+    background-size: 300% 300%;
+    border-radius: 6px;
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

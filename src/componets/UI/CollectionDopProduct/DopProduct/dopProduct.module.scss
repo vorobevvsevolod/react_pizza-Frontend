@@ -1,0 +1,49 @@
+
+.container{
+  position: relative;
+  width: 115px;
+  box-shadow: rgba(6, 5, 50, 0.12) 0px 4px 20px;
+  cursor: pointer;
+  border-radius: 12px;
+  margin: 5px;
+  padding: 8px;
+  text-align: center;
+  transition: box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
+  border: 2px solid white;
+
+  &:hover{
+    box-shadow: rgba(6, 5, 50, 0.12) 0px 2px 8px;
+  }
+  .svg{
+    position: absolute;
+    transition: opacity 0.2s ease-in-out;
+    right: 6%;
+    top: 4%;
+  }
+  .visible{
+    opacity: 1;
+  }
+
+  .hidden{
+    opacity: 0;
+  }
+
+  .name{
+    font-size: 13px;
+    font-weight: 600;
+    height: 45px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .price{
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+  }
+
+  &_active{
+    border: 2px solid #FF6900;
+  }
+}

@@ -1,0 +1,66 @@
+.buttonList{
+  margin-top: 10px;
+  width: 100%;
+  background: none;
+  border: 2px solid #d2d2d2;
+  border-radius: 3px;
+  padding: 3px 0px 4px 10px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+
+  .text{
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .image{
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(90deg);
+
+    &_open{
+      transform: rotate(270deg);
+    }
+
+  }
+}
+
+.popup{
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-top: none;
+  position: absolute;
+  width: 240px;
+  border-radius: 3px;
+  left: 24.6%;
+  z-index: 1100;
+
+  li{
+    color: black;
+    padding: 5px;
+    border-bottom: 1px solid #bbbbbb;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+    transition: all 0.1s ease-in-out;
+    .price{
+      font-size: inherit;
+      font-size: 14px;
+    }
+    .delete{
+      position: relative;
+      margin: 0 3px 0 7px;
+      transition: transform 0.1s ease-in-out;
+      cursor: pointer;
+
+      &:hover{
+        transform: scale(1.05);
+      }
+    }
+
+    &:hover{
+      background-color: #eeeeee;
+    }
+  }
+}
