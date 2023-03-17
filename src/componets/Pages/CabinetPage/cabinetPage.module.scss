@@ -1,0 +1,51 @@
+
+.title{
+  margin-bottom: 20px;
+}
+
+.notHaveFavorites_Container{
+  text-align: center;
+  margin-left: 20px;
+
+}
+
+
+.Orders{
+  &_title{
+    margin: 30px 0;
+  }
+  padding-bottom: 30px;
+}
+
+.table{
+  border: none;
+  border-collapse: collapse;
+
+  &_header{
+    color: rgb(92, 99, 112);
+    font-size: 17px;
+  }
+
+  &_col{
+    padding: 15px 48px 15px 0px;
+    text-align: left;
+    vertical-align: top;
+    font-weight: 500;
+
+    span{
+      font-weight: bold;
+      color: #ff6900;
+      cursor: pointer;
+      transition: color 0.3s ease-in-out;
+      &:hover{
+        color: darken(#ff6900, 5%);
+      }
+    }
+  }
+  &_row{
+    border-bottom: 1px solid rgb(226, 226, 233);
+  }
+  &_col_first{
+    text-align: center;
+  }
+}

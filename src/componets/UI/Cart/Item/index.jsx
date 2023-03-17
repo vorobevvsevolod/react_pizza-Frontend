@@ -5,17 +5,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteProductCart} from "../../../../redux/slice/cartSlice";
 import PizzaAxios from "../../../../axios/Pizza-axios";
 import PizzaDopProductList from "../../ProductList";
+import {selectToken} from "../../../../redux/slice/UserSlice";
 const Item = (props) => {
 	const dispatch = useDispatch();
 	const dopProductsSlice = useSelector(state => state.dopProduct.dopProducts)
 	const [dopProducts, setDopProducts] = React.useState([]);
-	const { token } = useSelector(state => state.tokenUser)
+	const token = useSelector(selectToken)
 	const deleteProduct = () => {
 		dispatch(deleteProductCart(props.id))
 		if(token){
-			PizzaAxios.delete(props.id).then(res =>{
-				console.log(res)
-			})
+			PizzaAxios.delete(props.id)
 		}
 	}
 	
@@ -27,7 +26,6 @@ const Item = (props) => {
 			
 			setDopProducts(filteredArray)
 		}
-		console.log(props.dopPrice)
 	}, [props.dopProducts])
 	
 	return (

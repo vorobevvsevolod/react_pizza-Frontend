@@ -1,0 +1,51 @@
+
+.svg{
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover{
+    transform: scale(1.1);
+  }
+}
+
+.info {
+  position: absolute;
+  width: 280px;
+  min-height: 45px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: rgb(55, 53, 53);
+
+
+  span {
+    display: block;
+    color: #b4b4b4;
+    margin-bottom: 10px;
+  }
+
+  &_container {
+    margin: 0;
+    height: 25px;
+    p {
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &:after {
+    display: block;
+    position: absolute;
+    top: -4%;
+    right: 8%;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: rgb(55, 53, 53);
+    transform: rotate(45deg);
+    border-radius: 4px;
+  }
+}

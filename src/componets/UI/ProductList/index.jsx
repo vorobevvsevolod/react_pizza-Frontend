@@ -3,9 +3,10 @@ import styles from './styles.module.scss'
 import PizzaAxios from "../../../axios/Pizza-axios";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteDopProductCart} from "../../../redux/slice/cartSlice";
+import {selectToken} from "../../../redux/slice/UserSlice";
 function PizzaDopProductList(props) {
 	const [showPopup, setShowPopup] = React.useState(false);
-	const { token } = useSelector(state => state.tokenUser)
+	const token = useSelector(selectToken)
 	const dispatch = useDispatch();
 	const deleteDopProduct = (dopProductId, price) => {
 		

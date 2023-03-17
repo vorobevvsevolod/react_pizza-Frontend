@@ -8,8 +8,11 @@
 .pizzaBlock {
   width: 280px;
   text-align: center;
-  margin: 0 0 65px 7px;
+  margin: 0 0 40px 7px;
+  flex-direction: column;
+  display: flex;
   .cu{
+    flex: 1;
     cursor: pointer;
   }
 }
@@ -35,14 +38,33 @@
 
 .text{
   text-align: left;
-  height: 65px;
+  overflow: auto;
+  font-size: 15px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #adacac;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 
 .bottom {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  align-items: center;
 }
 
 .price {

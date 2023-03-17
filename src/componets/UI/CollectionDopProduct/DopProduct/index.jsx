@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './dopProduct.module.scss'
 import {useDispatch} from "react-redux";
-import {addDopProduct, deleteDopProduct, updatePriceDopProduct} from "../../../../redux/slice/producrSlice";
+import {addDopProduct, deleteDopProduct, updatePriceDopProduct} from "../../../../redux/slice/fullProductSlice";
 
 const DopProduct = (props) => {
 	const [addInBasket, setAddBasket] = React.useState(false);
@@ -9,15 +9,15 @@ const DopProduct = (props) => {
 	const onClick = () => {
 		setAddBasket(!addInBasket)
 		if(!addInBasket){
-			dispatch(addDopProduct({pizzaId: props.pizzaId, dopProduct: {id:props.id, price: props.price, name: props.name}}))
+			dispatch(addDopProduct({id:props.id, price: props.price, name: props.name}))
 		} else {
-			dispatch(deleteDopProduct({id: props.id, pizzaId: props.pizzaId}))
+			dispatch(deleteDopProduct(props.id))
 		}
 	}
 	
 	React.useEffect(() =>{
 		if(addInBasket){
-			dispatch(updatePriceDopProduct({id: props.id, pizzaId: props.pizzaId, price: props.price}))
+			dispatch(updatePriceDopProduct({id: props.id, price: props.price}))
 		}
 	}, [])
 	

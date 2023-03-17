@@ -1,0 +1,21 @@
+.wrapper {
+  position: relative;
+  margin-right: 15px;
+  .title{
+    color: #888787;
+    margin: 0 0 5px 5px;
+    font-size: 14px;
+  }
+
+  .input{
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      border: 2px solid #949494;
+
+
+      &:focus{
+        border: 2px solid #ff6900;
+      }
+  }
+}

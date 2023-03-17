@@ -1,0 +1,74 @@
+.wrapper{
+  position: relative;
+  .title{
+    color: #888787;
+    margin: 0 0 5px 5px;
+    font-size: 14px;
+  }
+  .a_changeInput{
+    color: #ff6900;
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out ;
+
+    &:hover{
+      color: darken(#ff6900, 5%);
+    }
+  }
+  .active{
+    color: rgb(171, 173, 186);
+
+    &:hover{
+      color: rgb(171, 173, 186);
+    }
+  }
+  .innerInput{
+    position: absolute;
+    top: 10px;
+    left: 207px;
+  }
+
+  .cancelButton{
+    position: absolute;
+    top: 50%;
+    left:320px;
+  }
+
+  .containerInput{
+    display: flex;
+    position: relative;
+    margin-bottom: 25px;
+
+    .input{
+      height: 40px;
+      width: 300px;
+      padding: 10px 16px;
+      border-radius: 8px;
+
+      opacity: 1;
+
+      font-size: 16px;
+      line-height: 0;
+      font-weight: 500;
+      transition: all 0.3s ease-in-out;
+
+    }
+
+    &_disabled{
+      color: rgb(82, 82, 82);
+      cursor: not-allowed;
+      border: 1px solid #dcdcdc;
+      background-color: rgb(243, 243, 247);
+    }
+
+    &_active{
+      color: black;
+      cursor: pointer;
+      border: 1px solid #ff6900;
+      background-color: white;
+    }
+  }
+}
+

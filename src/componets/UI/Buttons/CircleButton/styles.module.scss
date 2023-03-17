@@ -1,0 +1,50 @@
+.button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  min-width: 32px;
+  padding: 0;
+  border: 3px solid #ff6900;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 10px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #ff6900;
+    color: white;
+
+  }
+
+  &_active{
+    background-color: #ff6900;
+    color: white;
+  }
+
+}
+
+
+
+.img{
+
+  &_left{
+    position: absolute;
+    top: 53%;
+    left: 48%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+  }
+
+  &_right{
+    position: absolute;
+    top: 52%;
+    left: 57%;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+}
+

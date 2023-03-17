@@ -2,10 +2,21 @@
   display: flex;
   align-items: center;
   background-color: rgb(243, 243, 247);
-  border-radius: 20px;
-  width: 96px;
-  height: 32px;
+
+
   justify-content: space-between;
+
+  &_standart{
+    width: 96px;
+    height: 32px;
+    border-radius: 20px;
+  }
+
+  &_big{
+    width: 167.5px;
+    height: 46px;
+    border-radius: 30px;
+  }
     svg{
 
       rect{
@@ -20,15 +31,31 @@
 }
 
 .count{
-  font-size: 16px;
+
   font-weight: 500;
   text-align: center;
   color: black;
+
+  &_standart{
+    font-size: 16px;
+  }
+
+  &_big{
+    font-size: 20px;
+  }
 }
 
 .circle{
-  width: 34px;
+
   height: 34px;
+
+  &_standart{
+    width: 34px;
+  }
+
+  &_big{
+    width: 50px;
+  }
   border: none;
   background-color: transparent;
   position: relative;

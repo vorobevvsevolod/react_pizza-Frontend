@@ -28,4 +28,67 @@
       color: #7b7b7b;
     }
   }
+
+  &_left{
+    display: flex;
+    align-items: center;
+  }
+
+  &_cabButton{
+    display: block;
+    position: relative;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    margin-left: 40px;
+
+    svg{
+      display: block;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: inherit;
+      path{
+        transition: inherit;
+      }
+    }
+
+    span{
+      display: block;
+      font-weight: bold;
+      font-size: 16px;
+      transition: inherit;
+    }
+
+    &:hover{
+      span{
+        color: #ff6900;
+      }
+
+      svg{
+        transform: translate(-50%, -10%);
+        path{
+          fill: #ff6900;
+        }
+      }
+    }
+  }
+  &_loginButton{
+    text-align: center;
+    background-color: #ff6900;
+    padding: 7px 25px;
+    border: none;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out ;
+    margin-left: 40px;
+    &:hover{
+      background-color: lighten(#ff6900, 5%);
+    }
+  }
 }

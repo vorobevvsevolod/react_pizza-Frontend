@@ -1,25 +1,28 @@
 import React from 'react';
-import styles from './fullProduct.module.scss'
-
-
-import CollectionDopProducts from "../CollectionDopProduct";
-import OrangeButton from "../Buttons/OrangeButton/OrangeButton";
+import styles from "../fullProduct.module.scss";
+import {
+	selectArrayFullProduct, selectCartDopProducts,
+	 selectSizes, selectTypes,
+	setShowFullProduct
+} from "../../../../redux/slice/fullProductSlice";
+import CollectionDopProducts from "../../CollectionDopProduct";
+import OrangeButton from "../../Buttons/OrangeButton/OrangeButton";
 import {useDispatch, useSelector} from "react-redux";
-import {addProductInCart} from "../../../redux/slice/cartSlice";
-import PizzaAxios from "../../../axios/Pizza-axios";
-import {selectArrayFullProduct, selectShowFullProduct, setShowFullProduct} from "../../../redux/slice/fullProductSlice";
+
+import DopInfo from "../DopInfo/indes";
+import {AddProductInCartContext} from "../../../../App";
 
 const FullPizza = () => {
-	const showFullProduct = useSelector(selectShowFullProduct);
-	const arrayFullProduct = useSelector(selectArrayFullProduct)
+	const arrayFullProduct = useSelector(selectArrayFullProduct);
+	const cartDopProducts = useSelector(selectCartDopProducts)
+	const sizes = useSelector(selectSizes)
+	const types = useSelector(selectTypes)
+	const addInCartContext = React.useContext(AddProductInCartContext)
 	
-	const { sizes } = useSelector(state => state.sizes)
-	const { types } = useSelector(state => state.types)
-	const { token } = useSelector(state => state.tokenUser)
 	
 	const dispatch = useDispatch()
 	
-	const [showDopInfo, seyShowDopInfo ] = React.useState(false)
+	
 	const [activeSize, setActiveSize] =React.useState(2)
 	const [activeType, setActiveType] =React.useState({
 		id: 1,
@@ -73,53 +76,34 @@ const FullPizza = () => {
 	}
 	
 	const addInCart = () => {
-		const composition = arrayFullProduct.description + arrayFullProduct.cartDopProduct.reduce((string, obj)=> string + ', ' + obj.name, '')
+		const composition = arrayFullProduct.description + cartDopProducts.reduce((string, obj)=> string + ', ' + obj.name, '')
 		const dopProducts = [];
-		arrayFullProduct.cartDopProduct.map( item => dopProducts.push(item.id))
-		if(token){
-			PizzaAxios.add({
-				pizzasSizedId: activeType.id,
-				description: description,
-				dopProducts: dopProducts
-				
-			}).then(res =>{
-				dispatch(addProductInCart({
-					id: res,
-					price: price,
-					img_url: activeType.typeInfo.img_url,
-					name: arrayFullProduct.name,
-					dopProducts: dopProducts,
-					composition: arrayFullProduct.description,
-					description: description,
-					quantity: 1,
-					dopPrice: sizes[activeSize - 1].dopPrice
-				}))
-				
-			})
-		}else{
-			dispatch(addProductInCart({
-				price: price,
-				img_url: activeType.typeInfo.img_url,
-				name: arrayFullProduct.name,
-				composition: composition,
-				description: description,
-				quantity: 1,
-				sizeId: activeType.id,
-				dopPrice: sizes[activeSize - 1].dopPrice
-			}))
-		}
-		dispatch(setShowFullProduct())
+		
+		cartDopProducts.map( item => dopProducts.push(item.id))
+		
+		addInCartContext({
+			price: price,
+			img_url: activeType.typeInfo.img_url,
+			name: arrayFullProduct.name,
+			dopProducts: dopProducts,
+			composition: composition,
+			description: description,
+			quantity: 1,
+			dopPrice: sizes[activeSize - 1].dopPrice,
+			pizzasSizedId: activeType.id,
+			typeProduct: arrayFullProduct.productsTypeId
+		})
+		
 	}
 	
+	
 	React.useEffect(() =>{
-		
 		setSizesAndTypes(getAllSizesFromPizzas(arrayFullProduct))
 	},[arrayFullProduct]);
 	
 	React.useEffect(() =>{
-		console.log(arrayFullProduct);
-		setPrice(activeType.typeInfo.price + arrayFullProduct.cartDopProduct.reduce((sum, obj) => sum + obj.price, 0))
-	}, [activeType.typeInfo, arrayFullProduct.cartDopProduct])
+		setPrice(activeType.typeInfo.price + cartDopProducts.reduce((sum, obj) => sum + obj.price, 0))
+	}, [activeType.typeInfo, cartDopProducts])
 	
 	React.useEffect(() =>{
 		setDescription(`${sizes[activeSize- 1]?.size} см, ${types.find(item => item.id === activeType.typeInfo.pizzasTypeId)?.type} тесто, ${activeType.typeInfo.pizza_info?.weight} г`)
@@ -129,16 +113,13 @@ const FullPizza = () => {
 		if(sizesAndTypes.length)
 			updateActiveTypeInfo(sizesAndTypes[activeSize - 1].types[0].id)
 	}, [sizesAndTypes])
-	
-	
 	return (
-		<div className={showFullProduct ? styles.overlay : styles.overlay_hidden}>
 			<div className={styles.fullProduct}>
 				<img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowFullProduct())}/>
 				<div className={styles.item_left}>
 					<img
 						className={`${styles.item_left_img} ${(activeSize === 1) ? styles.item_left_little : (activeSize === 2) ? styles.item_left_middle : (activeSize === 3) ? styles.item_left_big : ''}`}
-						src={`${process.env.REACT_APP_API_SERVER}${activeType.typeInfo.img_url}`}
+						src={`${process.env.REACT_APP_API_SERVER}${activeType?.typeInfo?.img_url}`}
 						alt=""/>
 					{(activeSize === 1) && <svg className={styles.item_left_img_svg} width="400" height="400"
 					                            viewBox="0 0 382 382" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,34 +139,9 @@ const FullPizza = () => {
 					<div className={styles.item_right_description}>
 						<div className={styles.item_right_description_title}>
 							<h2>{arrayFullProduct.name}</h2>
-							{(showDopInfo) && <div className={styles.item_right_description_title_info}>
-								<span>Пищевая ценность на 100г:</span>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Энерг. ценность</p>
-									<p>{`${activeType.typeInfo.pizza_info?.calories} ккал`}</p>
-								</div>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Белки</p>
-									<p>{`${activeType.typeInfo.pizza_info?.squirrels} г`}</p>
-								</div>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Жиры</p>
-									<p>{`${activeType.typeInfo.pizza_info?.fats} г`}</p>
-								</div>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Углеводы</p>
-									<p>{`${activeType.typeInfo.pizza_info?.carbohydr} г`}</p>
-								</div>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Вес</p>
-									<p>{`${activeType.typeInfo.pizza_info?.weight} г`}</p>
-								</div>
-								<div className={styles.item_right_description_title_info_container}>
-									<p>Диаметр</p>
-									<p>{`${sizes[activeSize - 1]?.size} см`}</p>
-								</div>
-							</div>}
-							<svg onClick={() => seyShowDopInfo(!showDopInfo)} className='pizza-block__select__item_right-svg' width="28" height="28" viewBox="0 0 24 24" fill="none"><path fillRule="evenodd" clipRule="evenodd" d="M12 20a8 8 0 100-16 8 8 0 000 16zm0 2c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" fill="#000"></path><path fillRule="evenodd" clipRule="evenodd" d="M12 11a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1z" fill="#000"></path><path d="M13.5 7.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" fill="#000"></path></svg>
+							<div className={styles.info}>
+								<DopInfo infoArray={activeType?.typeInfo?.pizza_info} top='11%' right='3.1%'/>
+							</div>
 						</div>
 						<p>{description}</p>
 						<p>{arrayFullProduct.description}</p>
@@ -213,13 +169,12 @@ const FullPizza = () => {
 								}
 							</ul>
 						</div>
-						<CollectionDopProducts array = {arrayFullProduct.dop_product_pizzas} size={activeSize} pizzaId={arrayFullProduct.id} dopPrice={sizes[activeSize - 1]?.dopPrice}/>
+						<CollectionDopProducts array = {arrayFullProduct.dop_product_pizzas} size={activeSize} dopPrice={sizes[activeSize - 1]?.dopPrice}/>
 					</div>
 					<OrangeButton onClick={addInCart} title={`Добавить в корзину за ${price} ₽`}/>
 				</div>
 			
 			</div>
-		</div>
 	);
 };
 

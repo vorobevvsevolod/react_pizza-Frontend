@@ -30,7 +30,7 @@
       top: 50%;
       transform: translateY(-47%);
       transition: width 0.3s ease-in-out;
-
+      z-index: 100;
       &_svg{
         position: absolute;
         top: 50%;
@@ -88,57 +88,10 @@
         margin: 15px 0;
         text-align: left;
 
-        &_info{
-          position: absolute;
-          right: 2.5%;
-          top: 13%;
-          width: 280px;
-          min-height: 45px;
-          padding: 12px;
-          border-radius: 10px;
-          background-color: rgb(55, 53, 53);
-          span{
-            display: block;
-            color: #b4b4b4;
-            margin-bottom: 10px;
-          }
-
-          &_container{
-            margin: 0;
-
-            p{
-              color: white;
-              height: 10px;
-              font-size: 13px;
-              font-weight: bold;
-            }
-            display: flex;
-            justify-content: space-between;
-          }
-
-          &:after{
-            display: block;
-            position: absolute;
-            top: -4%;
-            right: 8%;
-            content: '';
-            width: 20px;
-            height: 20px;
-            background-color: rgb(55, 53, 53);
-            transform: rotate(45deg);
-            border-radius: 4px;
-          }
-
-        }
-
-        svg{
-          cursor: pointer;
-          transition: transform 0.2s ease-in-out;
+        .info{
           margin-right: 17px;
-          &:hover{
-            transform: scale(1.1);
-          }
         }
+
       }
 
       p{

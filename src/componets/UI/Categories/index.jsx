@@ -1,18 +1,21 @@
 import React from 'react';
 import styles from './styles.module.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProducts, setActiveType} from "../../../redux/slice/producrSlice";
 
-const categorise = ["Пицца","Комбо", "Закуски", "Десерты", "Напитки", "Другие товары"]
 
 const Categories = () => {
-	const [activeCategories, setActiveCategories ] = React.useState(0)
-	const onClickCategories = (index) =>{
-		setActiveCategories(index)
-	}
+	const { types , activeType, limit } = useSelector(state => state.products)
+	const dispatch = useDispatch()
+
+	React.useEffect(() =>{
+		dispatch(fetchProducts({offset: 0, isCount: true}))
+	}, [activeType])
 	return (
 		<div className={styles.categories}>
 			<ul>
-				{categorise.map((item, index) =>
-						<li key={index} className={activeCategories === index ? styles.active : ''} onClick={() => onClickCategories(index)}>{item}</li>
+				{types.map((item) =>
+						<li key={item.id} className={activeType === item.id ? styles.active : ''} onClick={() => dispatch(setActiveType(item.id))}>{item.name}</li>
 					)}
 			</ul>
 		</div>
