@@ -1,17 +1,16 @@
 import React from 'react';
 import styles from './InputDostavka.module.scss';
 
-const InputDostavka: React.FC <{ title: string; width?: string; textAlign?: string; onChange: any; type: string}> = (props) => {
+const InputAddress: React.FC <{ title: string; width?: string; textAlign?: 'center' | 'left'; onChange: any; type?: string}> = (props) => {
     const [valueInput, setValueInput] = React.useState('')
-    console.log(props);
-    const inChangeValue = (event) =>{
+    const inChangeValue: React.ChangeEventHandler<HTMLInputElement> = (event) =>{
         setValueInput(event.target.value);
         props.onChange(event.target.value, props.type)
     }
     return (
         <div className={styles.wrapper}>
             <div className={styles.title}>{props.title}</div>
-            <input style={{width: props.width, textAlign: props.textAlign}} className={styles.input}
+            <input style={{textAlign: props.textAlign, width: props.width}} className={styles.input}
                    value={valueInput}
                    onChange={inChangeValue}
             />
@@ -19,4 +18,4 @@ const InputDostavka: React.FC <{ title: string; width?: string; textAlign?: stri
     );
 };
 
-export default InputDostavka;
+export default InputAddress;

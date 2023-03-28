@@ -7,6 +7,8 @@ export interface ICartItem {
     dopProducts: number[];
     img_url: string;
     price: number;
-    dopPrice: number;
+    dopPrice?: number;
     productId?: number
+    typeProduct?: number
+    pizzasSizedId?:number
 }

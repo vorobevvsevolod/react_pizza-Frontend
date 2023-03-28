@@ -1,0 +1,37 @@
+.order{
+  &_title{
+    margin-bottom: 10px;
+  }
+
+
+  &_subtitle{
+    margin-top: 15px;
+    font-size: 18px;
+  }
+
+  &_containerProduct{
+    padding: 0 10px;
+  }
+}
+
+.section{
+  margin: 40px 0;
+  &_title{
+    font-weight: bold;
+    font-size: 35px;
+    margin-bottom: 15px;
+  }
+
+  &_total{
+    font-weight: bold;
+    font-size: 30px;
+  }
+}
+
+.address{
+  &_container{
+    display: flex;
+  }
+
+}
+

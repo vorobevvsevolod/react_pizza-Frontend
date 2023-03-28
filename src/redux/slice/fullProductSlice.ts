@@ -12,6 +12,7 @@ interface FullProductSliceState{
     product: IProduct,
     types: ITypesPizza[],
     sizes: ISizesPizza[],
+    activeType: number,
     cartDopProducts: IDopProduct[],
     status: StatusFetch,
     error: string
@@ -35,6 +36,7 @@ const FullProductSlice = createSlice({
         },
 		types: [],
 		sizes: [],
+        activeType: 0,
 		cartDopProducts: [],
 		status: StatusFetch.LOADING,
 		error: ''
@@ -51,7 +53,13 @@ const FullProductSlice = createSlice({
                 description: '',
                 productsTypeId: 0,
             };
+
+            state.activeType = 0;
 		},
+
+        openFullProduct: (state) =>{
+            state.show = true;
+        },
 		
 		setArrayFullProduct: (state, action: PayloadAction<IProduct>) =>{
 			state.product = action.payload;
@@ -73,7 +81,11 @@ const FullProductSlice = createSlice({
 
 		deleteDopProduct: (state, action: PayloadAction<number>) =>{
 			state.cartDopProducts = state.cartDopProducts.filter(item => item.id !== action.payload)
-		}
+		},
+
+        setActiveTypesPizza: (state, action: PayloadAction<number>) =>{
+            state.activeType = action.payload;
+        }
 	},
 	extraReducers: (builder) => {
 		builder
@@ -115,6 +127,11 @@ export const selectSizes = createSelector(
 	(state: RootState) => state.fullProduct.sizes,
 	(sizes) => sizes
 );
+
+export const selectActiveTypePizza = createSelector(
+    (state: RootState) => state.fullProduct.activeType,
+    (activeType) => activeType
+);
 export const FullProductReducer = FullProductSlice.reducer;
 
 export const {
@@ -122,5 +139,7 @@ export const {
 	setArrayFullProduct,
 	addDopProduct,
 	updatePriceDopProduct,
-	deleteDopProduct
+	deleteDopProduct,
+    openFullProduct,
+    setActiveTypesPizza
 } = FullProductSlice.actions;

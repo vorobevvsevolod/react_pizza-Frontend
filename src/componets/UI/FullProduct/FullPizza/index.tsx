@@ -1,17 +1,18 @@
 import React from 'react';
 import styles from "../fullProduct.module.scss";
 import {
-	selectArrayFullProduct, selectCartDopProducts,
-	 selectSizes, selectTypes,
-	setShowFullProduct
+    selectActiveTypePizza,
+    selectArrayFullProduct, selectCartDopProducts,
+    selectSizes, selectTypes, setActiveTypesPizza,
+    setShowFullProduct
 } from "../../../../redux/slice/fullProductSlice";
 import CollectionDopProducts from "../../CollectionDopProduct";
 import OrangeButton from "../../Buttons/OrangeButton/orangeButton";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 
 import DopInfo from "../DopInfo/indes";
 import {AddProductInCartContext} from "../../../../App";
-import {useAppDispatch} from "../../../../redux";
+import { useAppDispatch} from "../../../../redux";
 import {IProductInfo} from "../../../../redux/interface/IProductInfo";
 import {IProduct} from "../../../../redux/interface/IProduct";
 
@@ -23,11 +24,22 @@ type SizeAndTypes = {
             typeId: number
         }[]
 }
+type ActiveType = {
+    id: number,
+    typeInfo: {
+        id: number
+        img_url: string
+        pizza_info?: IProductInfo
+        pizzasTypeId: number
+        price: number
+    }}
 const FullPizza = () => {
 	const arrayFullProduct = useSelector(selectArrayFullProduct);
 	const cartDopProducts = useSelector(selectCartDopProducts)
 	const sizes = useSelector(selectSizes)
 	const types = useSelector(selectTypes)
+    const activeTypesPizza = useSelector(selectActiveTypePizza)
+
 	const addInCartContext = React.useContext(AddProductInCartContext)
 
 	const dispatch = useAppDispatch();
@@ -36,15 +48,7 @@ const FullPizza = () => {
     const [description, setDescription] = React.useState<string>('')
     const [sizesAndTypes, setSizesAndTypes] = React.useState<SizeAndTypes[]>([])
 	const [activeSize, setActiveSize] =React.useState<number>(2)
-	const [activeType, setActiveType] =React.useState<{
-        id: number,
-        typeInfo: {
-            id: number
-            img_url: string
-            pizza_info?: IProductInfo
-            pizzasTypeId: number
-            price: number
-        }}>({id: 1, typeInfo: {
+	const [activeType, setActiveType] =React.useState<ActiveType>({id: 1, typeInfo: {
             id: 0,
             img_url: '',
             pizzasTypeId: 0,
@@ -89,10 +93,15 @@ const FullPizza = () => {
 		    	})
 		    )
 
-        if(obj)  setActiveType({typeInfo: obj, id: id})
+        if(obj){
+            setActiveType({typeInfo: obj, id: id})
+            //@ts-ignore
+            dispatch(setActiveTypesPizza( obj.id ))
+        }
     }
 	
 	const selectActiveSize = (id: number) =>{
+
 		updateActiveTypeInfo(sizesAndTypes[id - 1].types[0].id)
 		setActiveSize(id)
 	}
@@ -133,9 +142,23 @@ const FullPizza = () => {
 	}, [activeType.typeInfo, activeSize])
 	
 	React.useEffect(() =>{
-		if(sizesAndTypes.length)
-			updateActiveTypeInfo(sizesAndTypes[activeSize - 1].types[0].id)
-    }, [sizesAndTypes])
+        if(sizesAndTypes.length)
+           if(activeTypesPizza){
+               let sizesId;
+               sizesAndTypes.map(size =>
+                   size.types.map(type =>{
+                       if(type.id === activeTypesPizza)
+                           sizesId = size.sizeId
+                   })
+               );
+               if(sizesId) setActiveSize(sizesId)
+               updateActiveTypeInfo(activeTypesPizza)
+           } else {
+               updateActiveTypeInfo(sizesAndTypes[activeSize - 1].types[0].id)
+           }
+    }, [sizesAndTypes.length])
+
+
 	return (
 			<div className={styles.fullProduct}>
 				<img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowFullProduct())}/>
@@ -169,30 +192,33 @@ const FullPizza = () => {
 						<p>{description}</p>
 						<p>{arrayFullProduct.description}</p>
 						<div className={styles.selector}>
-							<ul>
-								{sizesAndTypes.map(item =>
-									<li key={item.sizeId}
-									    className={(activeSize === item.sizeId) ? styles.active : ''}
-									    onClick={() => selectActiveSize(item.sizeId)}
-									>{sizes[item.sizeId - 1].size} см</li>
-								)}
-							</ul>
-							<ul>
-								{
-									sizesAndTypes.map(sizeAndType =>
-											(sizeAndType.sizeId === activeSize)
-											&& sizeAndType.types.map(type =>
-												<li
-													key={type.id}
-													className={(activeType.id === type.id) ? styles.active : ''}
-													onClick={() => updateActiveTypeInfo(type.id)}
-												>{types.find(item => item.id === type.typeId)?.type} </li>
-											)
-									)
-								}
-							</ul>
+                            {sizes && types &&
+                                <>
+	                                <ul>
+                                        {sizesAndTypes.map(item =>
+                                            <li key={item.sizeId}
+                                                className={(activeSize === item.sizeId) ? styles.active : ''}
+                                                onClick={() => selectActiveSize(item.sizeId)}
+                                            >{sizes[item.sizeId - 1].size} см</li>
+                                        )}
+	                                </ul>
+	                                <ul>
+                                        {
+                                            sizesAndTypes.map(sizeAndType =>
+                                                    (sizeAndType.sizeId === activeSize)
+                                                    && sizeAndType.types.map(type =>
+                                                        <li
+                                                            key={type.id}
+                                                            className={(activeType.id === type.id) ? styles.active : ''}
+                                                            onClick={() => updateActiveTypeInfo(type.id)}
+                                                        >{types.find(item => item.id === type.typeId)?.type} </li>
+                                                    )
+                                            )
+                                        }
+	                                </ul>
+                                </>}
 						</div>
-                        {(arrayFullProduct.dop_product_pizzas) && <CollectionDopProducts array={arrayFullProduct.dop_product_pizzas} dopPrice={sizes[activeSize - 1].dopPrice}/>}
+                        {(arrayFullProduct.dop_product_pizzas && sizes.length) && <CollectionDopProducts array={arrayFullProduct.dop_product_pizzas} dopPrice={sizes[activeSize - 1].dopPrice}/>}
 					</div>
 					<OrangeButton onClick={addInCart} title={`Добавить в корзину за ${price} ₽`}/>
 				</div>

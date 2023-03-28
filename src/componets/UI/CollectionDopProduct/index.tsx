@@ -23,11 +23,8 @@ const CollectionDopProducts: React.FC<CollectionDopProducts> = ({ array, dopPric
 			return ({...item, price: item.price + dopPrice})
 		})
 		setDopProducts(newArray);
-	}, [])
-	
-	React.useEffect(() =>{
-	
-	}, [dopProducts])
+    }, [dopPrice])
+
 	return (
 		<>
 			<div className={styles.title}>Добавить по вкусу</div>

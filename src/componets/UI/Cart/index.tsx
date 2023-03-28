@@ -5,11 +5,13 @@ import {selectCart, selectShowCart, setShowCart} from "../../../redux/slice/cart
 import Item from "./Item";
 import OrangeButton from "../Buttons/OrangeButton/orangeButton";
 import {useAppDispatch} from "../../../redux";
+import OrdersAxios from "../../../axios/Orders-axios";
+import {useNavigate} from "react-router-dom";
 const Cart = () => {
 	const showCart = useSelector(selectShowCart)
 	const cart = useSelector(selectCart)
 	const dispatch = useAppDispatch()
-
+    const navigate = useNavigate()
 	React.useEffect(() =>{
 		if(showCart){
 			document.documentElement.classList.add('no-scroll');
@@ -23,6 +25,12 @@ const Cart = () => {
 	const totalCount = () =>{
 		return cart.reduce((sum, obj) => sum + obj.quantity, 0)
 	}
+
+    const onClick = () => {
+        dispatch(setShowCart())
+        navigate('/order')
+    }
+
 	return (
 		<div className={`${styles.overlay} ${showCart ? styles.overlay_visible : styles.overlay_hidden}`}>
 			<img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowCart())}/>
@@ -51,7 +59,7 @@ const Cart = () => {
 								</div>
 								<div className={styles.bottom_button}>
 									<div className={styles.bottom_button_total}><span>Сумма заказа</span><span>{totalPrice()} ₽</span></div>
-									<OrangeButton title='К оформлению заказа'/>
+									<OrangeButton onClick={onClick} title='К оформлению заказа'/>
 								</div>
 							</div>
 						</>

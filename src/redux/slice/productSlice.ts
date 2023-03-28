@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "../../axios";
 import {IProduct} from "../interface/IProduct";
 import {StatusFetch} from "../interface/StatusFetch";
@@ -17,7 +17,6 @@ interface ProductSliceState {
 }
 
 interface FetchProducts{
-    offset: number
     isCount?: boolean
 }
 
@@ -27,8 +26,9 @@ export const fetchProducts = createAsyncThunk<
     { state: RootState }
 >('products/fetchProducts', async (option, thunkAPI) => {
     const state = thunkAPI.getState();
+    const offset = (state.products.currentPage - 1) * state.products.limit;
     const { data } = await axios.get(
-        `/api/products?typeId=${state.products.activeType}&limit=${state.products.limit}&offset=${option.offset}${option.isCount ? '&isCount=true' : ''}`
+        `/api/products?typeId=${state.products.activeType}&limit=${state.products.limit}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
     );
     return {
         products: data.message.products as IProduct[],
@@ -50,7 +50,7 @@ const ProductsSlice = createSlice({
 		totalCount: 0,
 		currentPage: 1,
 		limit: 8,
-		status: StatusFetch.LOADING,
+		status: StatusFetch.START ,
 		error: ''
 	} as ProductSliceState,
 	reducers:{
@@ -98,4 +98,10 @@ const ProductsSlice = createSlice({
 
 
 export const ProductsReducer = ProductsSlice.reducer;
+
+export const selectStatusProducts = createSelector(
+    (state: RootState) => state.products.status,
+    (status) => status
+);
+
 export const { setActiveType, setCurrentPage } = ProductsSlice.actions;

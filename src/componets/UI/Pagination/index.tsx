@@ -5,7 +5,7 @@ import {setCurrentPage} from "../../../redux/slice/productSlice";
 import styles from "./styles.module.scss";
 import {RootState} from "../../../redux";
 
-const Pagination: React.FC <{ onClick: any }> = ({ onClick }) => {
+const Pagination: React.FC = () => {
 	const { totalCount, limit, currentPage } = useSelector((state: RootState) => state.products)
 	const dispatch = useDispatch()
 	
@@ -48,10 +48,6 @@ const Pagination: React.FC <{ onClick: any }> = ({ onClick }) => {
 			return buttons;
 		}
 	}
-	
-	React.useEffect(() =>{
-		onClick();
-	}, [currentPage])
 	
 	return (
 		<div className={styles.PaginationContainer}>

@@ -8,15 +8,8 @@ import Pagination from "../../UI/Pagination";
 import {RootState, useAppDispatch} from "../../../redux";
 
 const Home = () => {
-	const {products, status, error, types, activeType, currentPage, limit } = useSelector((state: RootState) => state.products)
-	const dispatch = useAppDispatch()
-	
-	
-	
-	const onClickButtonPagination = () => {
-		const offset = (currentPage - 1) * limit;
-		dispatch(fetchProducts({offset: offset}))
-	}
+	const {products, status, error, types, activeType} = useSelector((state: RootState) => state.products)
+
 	return (
 		<>
 			<Categories/>
@@ -30,7 +23,7 @@ const Home = () => {
 				}
 			</div>
 			
-			<Pagination onClick={onClickButtonPagination}/>
+			<Pagination/>
 		</>
 	);
 };

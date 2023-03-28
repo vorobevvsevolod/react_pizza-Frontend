@@ -6,7 +6,8 @@ import {deleteDopProductCart} from "../../../redux/slice/cartSlice";
 import {selectToken} from "../../../redux/slice/UserSlice";
 import {useAppDispatch} from "../../../redux";
 import {IDopProduct} from "../../../redux/interface/IDopProduct";
-const PizzaDopProductList: React.FC<{ dopProducts: IDopProduct[], id: number }> = ({ dopProducts, id }) => {
+
+const PizzaDopProductList: React.FC<{ dopProducts: IDopProduct[], id: number, order?:boolean}> = ({ dopProducts, id, order}) => {
 	const [showPopup, setShowPopup] = React.useState(false);
 	const token = useSelector(selectToken)
 	const dispatch = useAppDispatch();
@@ -20,14 +21,14 @@ const PizzaDopProductList: React.FC<{ dopProducts: IDopProduct[], id: number }> 
 		setShowPopup(false)
 	}
     return (
-		<>
+		<div className={styles.container}>
 			<button className={styles.buttonList} onClick={() => setShowPopup(!showPopup)}>
 				<span className={styles.text}>Дополнительные продукты</span>
 				<img className={`${styles.image} ${(showPopup) ? styles.image_open : ''}`} width={20}  src="/img/arrowProducstLits.svg" alt=""/>
 			</button>
 			{
 				showPopup
-				? <ul className={styles.popup}>
+				? <ul className={`${styles.popup} ${order ? styles.popup_order : styles.popup_cart}`}>
 						{dopProducts.map(item =>
 								<li key={item.id}>
 									<p>{item.name}</p>
@@ -41,7 +42,7 @@ const PizzaDopProductList: React.FC<{ dopProducts: IDopProduct[], id: number }> 
 				: ''
 			}
 			
-		</>
+		</div>
 	);
 }
 

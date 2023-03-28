@@ -5,7 +5,13 @@ import {Link, useNavigate} from "react-router-dom";
 
 import styles from './cabinetPage.module.scss'
 import InputCabinet from "../../UI/inputCabinet";
-import {changeEmailUser, changePhone, changeUsername, selectUserInfo} from "../../../redux/slice/UserSlice";
+import {
+    changeEmailUser,
+    changePhone,
+    changeUsername,
+    clearTokenUser,
+    selectUserInfo
+} from "../../../redux/slice/UserSlice";
 import UserAxios from "../../../axios/User-axios";
 import OrangeButton from "../../UI/Buttons/OrangeButton/orangeButton";
 import {RootState, useAppDispatch} from "../../../redux";
@@ -13,15 +19,11 @@ import {RootState, useAppDispatch} from "../../../redux";
 function CabinetPage (){
 	const navigate = useNavigate();
 	const userInfo = useSelector(selectUserInfo)
-	const status = useSelector((state: RootState) => state.userInfo.status)
+	const { status, orders} = useSelector((state: RootState) => state.userInfo)
 	const dispatch = useAppDispatch();
 	
 	const exitFromAccount = () => {
-		// dispatch(ClearTokenUser())
-		// dispatch(clearCart())
-		// dispatch(clearFavorites())
-		// dispatch(clearFavoriteCartInCard())
-		// dispatch(clearInfoUser())
+		 dispatch(clearTokenUser())
 	}
 	const changeUserInfo = (value: string, type: string) =>{
 		switch (type){
@@ -44,6 +46,20 @@ function CabinetPage (){
 				break;
 		}
 	}
+
+    function formatDate(dateString: string): string {
+        const date: Date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
+        return date.toLocaleDateString('ru-RU', options);
+    }
+
 	return(
 		<>
 			<h2 className={styles.title}>Личные данные</h2>
@@ -59,33 +75,32 @@ function CabinetPage (){
 			<h2 className={styles.Orders_title}>Заказы</h2>
 			<div className={styles.Orders}>
 				{
-					(false)
+					(orders.length)
 						?
-						// <table className={styles.table}>
-						// 	<thead className={styles.table_header}>
-						// 	<tr className={styles.table_row}>
-						// 		<th className={styles.table_col}>№</th>
-						// 		<th className={styles.table_col}>Время заказа</th>
-						// 		<th className={styles.table_col}>Сумма</th>
-						// 		<th className={styles.table_col}>Статус</th>
-						// 		<th className={styles.table_col}>Доставка</th>
-						// 		<th className={styles.table_col}>Товары</th>
-						// 	</tr>
-						// 	</thead>
-						// 	<tbody>
-						// 	{orders.map(order =>(
-						// 		<tr className={styles.table_row} key={order.order_id}>
-						// 			<td className={styles.table_col} >{order.order_id}</td>
-						// 			<td className={styles.table_col} >{order.date}</td>
-						// 			<td className={styles.table_col} >{order.total_cost} ₽</td>
-						// 			<td className={styles.table_col} >{order.status}</td>
-						// 			<td style={{fontSize: '13px'}} className={styles.table_col} >{order.adress}</td>
-						// 			<td className={styles.table_col} ><span onClick={() => navigate(`/order/${order.order_id}`)}>Посмотреть</span></td>
-						// 		</tr>
-						// 	))}
-						// 	</tbody>
-						// </table>
-						<></>
+						<table className={styles.table}>
+							<thead className={styles.table_header}>
+							<tr className={styles.table_row}>
+								<th className={styles.table_col}>№</th>
+								<th className={styles.table_col}>Время заказа</th>
+								<th className={styles.table_col}>Сумма</th>
+								<th className={styles.table_col}>Статус</th>
+								<th className={styles.table_col}>Доставка</th>
+								<th className={styles.table_col}>Товары</th>
+							</tr>
+							</thead>
+							<tbody>
+							{orders.map(order =>(
+								<tr className={styles.table_row} key={order.id}>
+									<td className={styles.table_col} >{order.id}</td>
+									<td className={styles.table_col} >{formatDate(order.createdAt)}</td>
+									<td className={styles.table_col} >{order.total_price} ₽</td>
+									<td className={styles.table_col} >{order.status}</td>
+									<td style={{fontSize: '13px'}} className={styles.table_col} >{order.address}</td>
+									<td className={styles.table_col} ><span>Посмотреть</span></td>
+								</tr>
+							))}
+							</tbody>
+						</table>
 						:
 						<div className={styles.notHaveFavorites_Container} >
 							<img src="/img/emodji_pechal.png" alt=""/>

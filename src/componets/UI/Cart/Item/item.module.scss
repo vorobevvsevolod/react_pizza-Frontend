@@ -1,3 +1,4 @@
+
 .item{
   width: 100%;
   position: relative;
@@ -6,11 +7,33 @@
   margin-bottom: 8px;
 
 
+  &_container{
+    width: 100%;
+    margin-left: 20px;
+  }
+
+
+
+  &_order{
+    border: 1px solid #d7d7d7;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+  }
+
   &_close{
     position: absolute;
-    right: 3%;
+
     transition: all 0.25s ease-in-out;
     cursor: pointer;
+
+    &_cart{
+      right: 3%;
+    }
+
+    &_order{
+      right: 1.2%;
+    }
 
     &:hover{
       transform: scale(1.1);
@@ -28,6 +51,7 @@
 
     &_description{
       transition: all 0.2s ease-in-out;
+      padding-right: 10px;
       span{
         font-size: 17px;
         font-weight: 600;
@@ -40,12 +64,21 @@
 
       &_composition{
         overflow: auto;
-        font-size: 13px;
-        width: 250px;
         color: #7b7b7b;
         height: 36px;
         font-style: italic;
         margin-top: 5px;
+        text-align: justify;
+        padding-right: 10px;
+
+        &_order{
+          font-size: 14px;
+        }
+
+        &_cart{
+          font-size: 13px;
+        }
+
         &::-webkit-scrollbar {
           width: 4px;
           border-radius: 4px;

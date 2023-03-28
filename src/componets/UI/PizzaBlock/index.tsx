@@ -14,62 +14,64 @@ import {ICartItem} from "../../../redux/interface/ICartItem";
 import {useAppDispatch} from "../../../redux";
 
 const PizzaBlock: React.FC <IProduct> = (props) => {
+    const addInCart = React.useContext(AddProductInCartContext)
+
+    const [idCart, setIdCart ] = React.useState<number>(props.id | 0)
 	const showFullProduct = useSelector(selectShowFullProduct);
     const cart = useSelector(selectCart)
 	const dispatch = useAppDispatch();
-	const addInCart = React.useContext(AddProductInCartContext)
+    const [imageLoaded, setImageLoaded] = React.useState(false);
 
-	const [idCart, setIdCart ] = React.useState<number>(props.id | 0)
+
 
 	React.useEffect(() =>{
-		if(showFullProduct){
-			document.documentElement.classList.add('no-scroll');
-		} else {
-			document.documentElement.classList.remove('no-scroll');
-		}
+		if(showFullProduct) document.documentElement.classList.add('no-scroll');
+		 else document.documentElement.classList.remove('no-scroll');
 	}, [showFullProduct])
+
 	const clickFullProduct = () => {
+        dispatch(setShowFullProduct())
 	  dispatch(setArrayFullProduct(props))
-		dispatch(setShowFullProduct())
-	}
+    }
+
 	
 	const clickButton = () => {
 		if(props.productsTypeId === 1){
 			clickFullProduct();
 		} else {
-			// @ts-ignore
-            addInCart({
-				price: props.price,
-				img_url: props.img_url,
-				name: props.name,
-				dopProducts: [],
-				composition: props.description,
-				description: `${props.pizza_info ? props.pizza_info.weight : ''}${props.productsTypeId === 4 ? ' л' : " г"}`,
-				quantity: 1,
-				dopPrice: 0,
-				productId: props.id,
-				typeProduct: props.productsTypeId
-			} as ICartItem)
+            if (addInCart) {
+                addInCart({
+                    price: props.price,
+                    img_url: props.img_url,
+                    name: props.name,
+                    dopProducts: [],
+                    composition: props.description,
+                    description: `${props.pizza_info ? props.pizza_info.weight : ''}${props.productsTypeId === 4 ? ' л' : " г"}`,
+                    quantity: 1,
+                    productId: props.id,
+                    typeProduct: props.productsTypeId
+                } as ICartItem)
+            }
 		}
 	}
 	
 	React.useEffect(() =>{
-		if(cart.find(item => item.productId === props.id) !== undefined){
-			// @ts-ignore
-            setIdCart(cart.find(item => item.productId === props.id).id)
-		}
-		
+        const idCart = cart.find(item => item.productId === props.id)
+		if(idCart && idCart.id) setIdCart(idCart.id)
+
 	}, [cart])
+
 	return (
 		<div className={styles.wrapper} >
 			<div className={styles.pizzaBlock}>
 				<div className={styles.cu}>
 					<div onClick={clickFullProduct}>
-						<img
-							className={styles.image}
-							src={`${process.env.REACT_APP_API_SERVER}/${props.img_url}`}
-							alt="Pizza"
-						/>
+                        <img
+                            className={styles.image}
+                            src={imageLoaded ? `${process.env.REACT_APP_API_SERVER}/${props.img_url}` : '/img/pizzaLoad.svg'}
+                            alt="Pizza"
+                            onLoad={() => setImageLoaded(true)}
+                        />
 						<h4 className={styles.title}>{props.name}</h4>
 						<div className={styles.text}>{props.description}</div>
 					</div>

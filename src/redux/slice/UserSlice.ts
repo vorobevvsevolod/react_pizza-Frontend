@@ -2,21 +2,28 @@ import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@red
 import axios from "../../axios";
 import {StatusFetch} from "../interface/StatusFetch";
 import {RootState} from "../index";
+import {IOrder} from "../interface/IOrder";
 
 
 interface UserSliceState{
-    token: string,
-    username: string,
-    email: string,
-    phone: string,
+    token: string;
+    username: string;
+    email: string;
+    phone: string;
+    orders: IOrder[];
 
-    status: StatusFetch,
+    status: StatusFetch;
     error: string
 }
 
 export const fetchUserInfo = createAsyncThunk('userInfo/fetchUserInfo', async () =>{
 	const { data } = await axios.get('/api/user/me')
 	return data.message as {username: string; email: string; phone: string}
+})
+
+export const fetchOrders = createAsyncThunk('userInfo/fetchOrders', async () =>{
+    const { data } = await axios.get('/api/orders')
+    return data.message as IOrder[]
 })
 
 const UserSlice = createSlice({
@@ -26,7 +33,7 @@ const UserSlice = createSlice({
 	    username: '',
 	    email: '',
 	    phone: '',
-	    
+	    orders: [],
 	    status: StatusFetch.LOADING,
 	    error: ''
     } as UserSliceState,
@@ -64,6 +71,8 @@ const UserSlice = createSlice({
 		    state.email = '';
 		    state.phone = ''
 	    }
+
+
     },
 	extraReducers: (builder) => {
 		builder
@@ -80,7 +89,11 @@ const UserSlice = createSlice({
 				state.status = StatusFetch.FAILED;
                 if(action.error.message)
 				    state.error = action.error.message;
-			});
+			})
+
+            .addCase(fetchOrders.fulfilled, (state, action) => {
+                state.orders = action.payload
+            })
 	}
 })
 
