@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles.module.scss'
+import {AddressSuggestions} from "react-dadata";
 import {useSelector} from "react-redux";
 import {selectCart} from "../../../redux/slice/cartSlice";
 import {useNavigate} from "react-router-dom";
@@ -11,6 +12,8 @@ import {useAppDispatch} from "../../../redux";
 import InputAddress from "../../UI/InputDostavka";
 import OrangeButton from "../../UI/Buttons/OrangeButton/orangeButton";
 import OrdersAxios from "../../../axios/Orders-axios";
+
+import 'react-dadata/dist/react-dadata.css';
 const OrderPage: React.FC = () => {
     const cart = useSelector(selectCart)
     const navigate = useNavigate()
@@ -18,34 +21,12 @@ const OrderPage: React.FC = () => {
     const userInfo = useSelector(selectUserInfo)
     const [phoneNoAuth, setPhoneNoAuth] = React.useState('')
 
-    const [address, setAddress] = React.useState({
-        streets: '',
-        house: '',
-        corpus: '',
-        flat: ''
-    })
+    const [address, setAddress] = React.useState<{dara: {}, unrestricted_value: string, value: string}>();
     const totalPrice = () =>{
         return cart.reduce((sum : number, obj) => sum + (obj.price * obj.quantity), 0)
     }
     const totalCount = () =>{
         return cart.reduce((sum : number, obj) => sum + obj.quantity, 0)
-    }
-
-    const changeValueAddress = (value: string, type: string) => {
-        switch (type) {
-            case 'streets':
-                setAddress(prev => ({...prev, streets: value}))
-                break;
-            case 'house':
-                setAddress(prev => ({...prev, house: value}))
-                break;
-            case 'corpus':
-                setAddress(prev => ({...prev, corpus: value}))
-                break;
-            case 'flat':
-                setAddress(prev => ({...prev, flat: value}))
-                break;
-        }
     }
 
     const changeUserInfo = (value: string, type: string) =>{
@@ -69,9 +50,9 @@ const OrderPage: React.FC = () => {
                 break;
         }
     }
-    
+
     const submitOrder = () => {
-        if (address.streets !== '' && address.house !== '' && address.corpus !== '' && address.flat !== '') {
+
 
             if (userInfo.phone !== '' || phoneNoAuth !== '') {
                 let products: {
@@ -82,7 +63,7 @@ const OrderPage: React.FC = () => {
                     description: string;
                 }[] = [];
 
-                let addressString = `ул. ${address.streets}, дом ${address.house}, к${address.corpus}, кв. ${address.flat}`;
+
                 cart.map(item => {
                     if(item.productId){
                         products.push({
@@ -102,15 +83,16 @@ const OrderPage: React.FC = () => {
 
                 })
 
-                OrdersAxios.create({products: products, address: addressString}).then(res =>{
+                OrdersAxios.create({products: products, address: address?.value}).then(res =>{
                     navigate('/home')
                 })
 
             } else alert('Необходимо указать номер телефона иначе мы не сможем с вами связаться!!!')
-
-        } else alert('Вы не заполнили адрес доставки')
     }
 
+    React.useEffect(()=>{
+        console.log(address);
+    },[address])
     return (
         <div>
             <h1 className={styles.order_title}>Ваш заказ:</h1>
@@ -134,17 +116,12 @@ const OrderPage: React.FC = () => {
 
             <div className={styles.section}>
                 <div className={styles.section_title}>Доставка</div>
-                <div className={styles.address_container}>
-                    <InputAddress width='300px' title='Улица' type='streets' onChange={changeValueAddress}/>
-                    <InputAddress textAlign='center' width='60px' title='Дом' type='house' onChange={changeValueAddress}/>
-                    <InputAddress textAlign='center' width='60px' title='Корпус' type='corpus' onChange={changeValueAddress}/>
-                    <InputAddress textAlign='center' width='70px' title='Квартира' type='flat'  onChange={changeValueAddress}/>
-                </div>
+                    <AddressSuggestions token={process.env.REACT_APP_API_DADATA_TOKEN!} selectOnBlur value={address} onChange={setAddress} delay={300} minChars={3}/>
             </div>
             <div className={styles.section} >
                 <div className={styles.section_total}>Итого: {totalPrice()} ₽</div>
             </div>
-            
+
             <OrangeButton title="Заказать" width='300px' onClick={submitOrder}/>
 
         </div>

@@ -87,7 +87,7 @@ function App() {
 
     React.useEffect(() =>{
 		dispatch(getTokenByCookie())
-		dispatch(setTokenUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjc5ODU4MjY2LCJleHAiOjE2Nzk5NDQ2NjZ9.pn41_i2sSYx-6v-kNJCX9fhZHjzayYTANYk00elJCF0"))
+		dispatch(setTokenUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjgwMzU2NDA0LCJleHAiOjE2ODA0NDI4MDR9.fkXL1fvPHaRGBpzMPn9N1UtyhO050FrcqZJ55ZBp6Tc"))
         dispatch(fetchUserInfo())
         dispatch(fetchCart())
         dispatch(fetchOrders())
