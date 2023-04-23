@@ -8,14 +8,14 @@
   }
 
   .input{
-      padding: 5px 10px;
-      border-radius: 5px;
       font-size: 18px;
-      border: 2px solid #949494;
-
+      border: 1px solid #949494;
+      height: 56px;
+      padding: 16px;
+      border-radius: 12px;
 
       &:focus{
-        border: 2px solid #ff6900;
+        border: 1px solid #ff6900;
       }
   }
 }

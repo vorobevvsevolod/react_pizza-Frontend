@@ -87,14 +87,19 @@ function App() {
 
     React.useEffect(() =>{
 		dispatch(getTokenByCookie())
-		dispatch(setTokenUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjgwMzU2NDA0LCJleHAiOjE2ODA0NDI4MDR9.fkXL1fvPHaRGBpzMPn9N1UtyhO050FrcqZJ55ZBp6Tc"))
-        dispatch(fetchUserInfo())
-        dispatch(fetchCart())
-        dispatch(fetchOrders())
+
 		dispatch(fetchProductsTypes())
         dispatch(fetchTypesAndSizes())
         dispatch(fetchDopProduct())
     }, [])
+
+    React.useEffect(() =>{
+        if(token){
+            dispatch(fetchUserInfo())
+            dispatch(fetchCart())
+            dispatch(fetchOrders())
+        }
+    }, [token])
 
     React.useEffect(()=>{
 

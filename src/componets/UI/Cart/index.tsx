@@ -33,8 +33,8 @@ const Cart = () => {
 
 	return (
 		<div className={`${styles.overlay} ${showCart ? styles.overlay_visible : styles.overlay_hidden}`}>
-			<img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowCart())}/>
 			<div className={`${styles.cart} ${showCart ? styles.cart_visible : ""}`}>
+				<img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowCart())}/>
 				{
 					(cart.length)
 					?   <>

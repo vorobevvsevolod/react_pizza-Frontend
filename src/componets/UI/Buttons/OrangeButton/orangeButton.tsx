@@ -4,11 +4,12 @@ import './orangeButton.scss'
 type OrangeButtonProps = {
     width?: string | null
     title: string
-    onClick?: any | null
+    onClick?: any | null,
+	disabled?: boolean
 }
-const OrangeButton:React.FC<OrangeButtonProps> = ({ width, title, onClick}) => {
+const OrangeButton:React.FC<OrangeButtonProps> = ({ width, title, onClick, disabled}) => {
 	return (
-		<button style={{width: (width) ? width : '100%'}} className='buttonAdd' onClick={onClick}>
+		<button style={{width: (width) ? width : '100%'}} className={`buttonAdd ${disabled ?  'buttonAdd_disabled': 'buttonAdd_active'}`} onClick={onClick} disabled={disabled}>
 			<span className='buttonAdd_span'>
 				{title}
 			</span>

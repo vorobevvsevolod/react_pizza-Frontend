@@ -5,11 +5,13 @@ import {selectCart, setShowCart} from "../../../redux/slice/cartSlice";
 import {selectToken} from "../../../redux/slice/UserSlice";
 import {Link} from "react-router-dom";
 import {useAppDispatch} from "../../../redux";
+import Login from "../Login";
 
 const Header: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const cart = useSelector(selectCart)
 	const token = useSelector(selectToken)
+	const [showLogin, setShowLogin] = React.useState<boolean>(false)
 	const totalPrice = () =>{
 		return cart.reduce((sum : number, obj) => sum + (obj.price * obj.quantity), 0)
 	}
@@ -79,12 +81,12 @@ const Header: React.FC = () => {
 								<span>Кабинет</span>
 							</button>
 						</Link> :
-						<Link to='/login'>
-							<button className={styles.header_loginButton} >
+							<button className={styles.header_loginButton} onClick={() => setShowLogin(!showLogin)}>
 								Войти
 							</button>
-						</Link>
 					}
+
+					 <Login showLogin={showLogin} setShowLogin={setShowLogin}/>
 				</div>
 				
 			</div>

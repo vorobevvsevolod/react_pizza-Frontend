@@ -3,6 +3,10 @@
   border-bottom: 1px solid #f6f6f6;
   padding: 35px;
 
+  @media (max-width: 800px) {
+    padding: 15px;
+  }
+
   .container {
     display: flex;
     align-items: center;
@@ -22,10 +26,18 @@
       letter-spacing: 1%;
       text-transform: uppercase;
       font-weight: 800;
+
+      @media (max-width: 700px) {
+        font-size: 20px;
+      }
     }
 
     p {
       color: #7b7b7b;
+      @media (max-width: 700px) {
+        font-size: 12px;
+        width: 150px;
+      }
     }
   }
 
@@ -43,6 +55,10 @@
     transition: all 0.3s ease-in-out;
     margin-left: 40px;
 
+    @media (max-width: 700px) {
+      margin-left: 10px;
+    }
+
     svg{
       display: block;
       position: relative;
@@ -59,6 +75,10 @@
       font-weight: bold;
       font-size: 16px;
       transition: inherit;
+
+      @media (max-width: 700px) {
+        font-size: 12px;
+      }
     }
 
     &:hover{
