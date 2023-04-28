@@ -29,6 +29,7 @@ import {RootState, useAppDispatch} from "./redux";
 import {useNavigate, useParams, useLocation} from "react-router-dom";
 import {StatusFetch} from "./redux/interface/StatusFetch";
 import {IProduct} from "./redux/interface/IProduct";
+import axios from "./axios";
 
 export const AddProductInCartContext = React.createContext<null | ((obj: any) => void)>(null);
 
@@ -37,7 +38,7 @@ function App() {
 	const dispatch = useAppDispatch();
 	const { status, token } = useSelector((state: RootState) => state.userInfo)
     const arrayFullProduct = useSelector((state: RootState) => state.fullProduct.product)
-    const { activeType, currentPage } = useSelector((state: RootState) => state.products)
+    const { activeType, currentPage, search } = useSelector((state: RootState) => state.products)
     const activeTypePizza = useSelector(selectActiveTypePizza)
 
     const navigate = useNavigate()
@@ -91,6 +92,7 @@ function App() {
 		dispatch(fetchProductsTypes())
         dispatch(fetchTypesAndSizes())
         dispatch(fetchDopProduct())
+
     }, [])
 
     React.useEffect(() =>{
@@ -129,10 +131,8 @@ function App() {
                         return product.pizzas_sizes_variants.find(item =>{
                             return item.find(size =>{
                                 if(size.pizzas_types_variant.id === params.productId){
-
                                     return size
                                 }
-
                             })
                         })
                 });
@@ -154,7 +154,7 @@ function App() {
             paramsToString()
         }
 
-    },[activeType, currentPage])
+    },[activeType, currentPage, search])
 
     React.useEffect(()=>{
         if(statusProducts !== StatusFetch.START) paramsToString(arrayFullProduct.id)

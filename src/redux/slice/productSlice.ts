@@ -8,6 +8,7 @@ import {RootState} from "../index";
 interface ProductSliceState {
     products: IProduct[],
     types: ITypesProducts[],
+    search: string,
     activeType: number,
     totalCount: number,
     currentPage: number,
@@ -17,7 +18,8 @@ interface ProductSliceState {
 }
 
 interface FetchProducts{
-    isCount?: boolean
+    isCount?: boolean,
+    search?: string
 }
 
 export const fetchProducts = createAsyncThunk<
@@ -28,7 +30,7 @@ export const fetchProducts = createAsyncThunk<
     const state = thunkAPI.getState();
     const offset = (state.products.currentPage - 1) * state.products.limit;
     const { data } = await axios.get(
-        `/api/products?typeId=${state.products.activeType}&limit=${state.products.limit}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
+        `/api/products?typeId=${state.products.activeType}&limit=${state.products.limit}&search=${state.products.search}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
     );
     return {
         products: data.message.products as IProduct[],
@@ -48,6 +50,7 @@ const ProductsSlice = createSlice({
 		types: [],
 		activeType: 1,
 		totalCount: 0,
+        search: "",
 		currentPage: 1,
 		limit: 8,
 		status: StatusFetch.START ,
@@ -60,7 +63,11 @@ const ProductsSlice = createSlice({
 		},
 		setCurrentPage: (state,action: PayloadAction<number>) =>{
 			state.currentPage = action.payload;
-		}
+		},
+
+        setSearchValue: (state,action: PayloadAction<string>) =>{
+            state.search = action.payload;
+        }
 
 	},
 	extraReducers: (builder) => {
@@ -104,4 +111,4 @@ export const selectStatusProducts = createSelector(
     (status) => status
 );
 
-export const { setActiveType, setCurrentPage } = ProductsSlice.actions;
+export const { setActiveType, setCurrentPage, setSearchValue } = ProductsSlice.actions;

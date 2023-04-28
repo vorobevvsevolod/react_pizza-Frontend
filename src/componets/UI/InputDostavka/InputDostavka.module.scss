@@ -8,14 +8,13 @@
   }
 
   .input{
-      font-size: 18px;
-      border: 1px solid #949494;
-      height: 56px;
-      padding: 16px;
-      border-radius: 12px;
-
+    font-size: 18px;
+    border: 2px solid #949494;
+    padding: 8px 11px 9px 11px;
+    border-radius: 6px;
+    font-weight: 600;
       &:focus{
-        border: 1px solid #ff6900;
+        border: 2px solid #ff6900;
       }
   }
 }

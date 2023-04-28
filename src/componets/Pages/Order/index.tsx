@@ -21,7 +21,7 @@ const OrderPage: React.FC = () => {
     const userInfo = useSelector(selectUserInfo)
     const [phoneNoAuth, setPhoneNoAuth] = React.useState('')
 
-    const [address, setAddress] = React.useState<{dara: {}, unrestricted_value: string, value: string}>();
+    const [address, setAddress] = React.useState<{data: {}, unrestricted_value: string, value: string}>({data: {}, unrestricted_value: '', value: ''});
     const totalPrice = () =>{
         return cart.reduce((sum : number, obj) => sum + (obj.price * obj.quantity), 0)
     }
@@ -93,6 +93,7 @@ const OrderPage: React.FC = () => {
     React.useEffect(()=>{
         console.log(address);
     },[address])
+
     return (
         <div>
             <h1 className={styles.order_title}>Ваш заказ:</h1>
@@ -116,7 +117,9 @@ const OrderPage: React.FC = () => {
 
             <div className={styles.section}>
                 <div className={styles.section_title}>Доставка</div>
-                    <AddressSuggestions token={process.env.REACT_APP_API_DADATA_TOKEN!} selectOnBlur value={address} onChange={setAddress} delay={300} minChars={3}/>
+                {// @ts-ignore
+                     <AddressSuggestions token={process.env.REACT_APP_API_DADATA_TOKEN!} selectOnBlur value={address.value} onChange={setAddress} delay={300} minChars={3}/>
+                }
             </div>
             <div className={styles.section} >
                 <div className={styles.section_total}>Итого: {totalPrice()} ₽</div>

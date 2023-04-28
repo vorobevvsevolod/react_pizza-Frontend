@@ -167,13 +167,13 @@ const FullPizza = () => {
 						className={`${styles.item_left_img} ${(activeSize === 1) ? styles.item_left_little : (activeSize === 2) ? styles.item_left_middle : (activeSize === 3) ? styles.item_left_big : ''}`}
 						src={`${process.env.REACT_APP_API_SERVER}${activeType?.typeInfo?.img_url}`}
 						alt=""/>
-					{(activeSize === 1) && <svg className={styles.item_left_img_svg} width="400" height="400"
+					{(activeSize === 1) && <svg className={`${styles.item_left_img_svg} ${styles.item_left_img_svg_midle}`}
 					                            viewBox="0 0 382 382" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<circle cx="191" cy="191" r="190" stroke="#6F6E6F" strokeWidth="0.6" strokeLinecap="round"
 						        strokeLinejoin="round" strokeDasharray="1 6.1"></circle>
 					</svg>}
 					
-					{(activeSize !== 3) && <svg className={styles.item_left_img_svg} width="500" height="500"
+					{(activeSize !== 3) && <svg className={`${styles.item_left_img_svg} ${styles.item_left_img_svg_big}`}
 					                            viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<ellipse opacity="0.6" cx="225" cy="225" rx="224" ry="224" stroke="#6F6E6F"
 						         strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"
