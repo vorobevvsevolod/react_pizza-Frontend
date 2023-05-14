@@ -1,0 +1,134 @@
+.title{
+  margin-bottom: 30px;
+}
+
+.subtitle{
+    font-size: 25px;
+    font-weight: 500;
+
+    margin-bottom: 40px;
+
+  span{
+    font-weight: 700;
+    color: #ff6613;
+  }
+}
+
+.info{
+  font-size: 25px;
+  font-weight: 500;
+  color: #7a7a7a;
+  margin-bottom: 20px;
+
+  span{
+    font-weight: 700;
+
+  }
+}
+
+.status{
+  &_container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    &_item{
+      position: relative;
+      width: 25%;
+      height: 200px;
+      text-align: center;
+
+      &_content{
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 90;
+        background-color: white;
+        padding: 20px;
+        &_title{
+          font-size: 20px;
+          font-weight: 600;
+
+        }
+
+        &_img{
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        &_line{
+          position: absolute;
+          top: 72%;
+          left: 50%;
+
+          transform: translateY(-50%);
+          width: 100%;
+          height: 5px;
+          z-index: 10;
+
+          &_active{
+            background-color: #ff6613;
+          }
+
+          &_noActive{
+            background-color: #cccccc;
+          }
+
+
+
+        }
+      }
+    }
+  }
+}
+
+.indeterminate_progress_bar {
+  position: absolute;
+  top: 72%;
+  left: 50%;
+
+  transform: translateY(-50%);
+  /* Color */
+  background-color: #d1d5db;
+
+  /* Rounded border */
+  border-radius: 9999px;
+
+  /* Size */
+  height: 5px;
+
+  position: relative;
+  overflow: hidden;
+
+  &_progress {
+    /* Color */
+    background-color: #ff6613;
+
+    /* Rounded border */
+    border-radius: 20px;
+
+    /* Absolute position */
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 20%;
+
+    /* Move the bar infinitely */
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-name: indeterminate-progress-bar;
+  }
+
+
+}
+
+@keyframes indeterminate-progress-bar {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 100%;
+  }
+}

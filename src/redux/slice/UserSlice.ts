@@ -3,6 +3,7 @@ import axios from "../../axios";
 import {StatusFetch} from "../interface/StatusFetch";
 import {RootState} from "../index";
 import {IOrder} from "../interface/IOrder";
+import {IOrderStatus} from "../interface/IOrderStatus";
 
 
 interface UserSliceState{
@@ -11,6 +12,7 @@ interface UserSliceState{
     email: string;
     phone: string;
     orders: IOrder[];
+    orderStatus: IOrderStatus[];
 
     status: StatusFetch;
     error: string
@@ -26,6 +28,11 @@ export const fetchOrders = createAsyncThunk('userInfo/fetchOrders', async () =>{
     return data.message as IOrder[]
 })
 
+export const fetchOrderStatus = createAsyncThunk('userInfo/fetchOrderStatus', async () =>{
+    const { data } = await axios.get('/api/orders/status')
+    return data.message as IOrderStatus[]
+})
+
 const UserSlice = createSlice({
     name: 'userInfo',
     initialState: {
@@ -34,6 +41,7 @@ const UserSlice = createSlice({
 	    email: '',
 	    phone: '',
 	    orders: [],
+        orderStatus: [],
 	    status: StatusFetch.LOADING,
 	    error: ''
     } as UserSliceState,
@@ -94,6 +102,10 @@ const UserSlice = createSlice({
             .addCase(fetchOrders.fulfilled, (state, action) => {
                 state.orders = action.payload
             })
+
+            .addCase(fetchOrderStatus.fulfilled, (state, action) => {
+                state.orderStatus = action.payload
+            })
 	}
 })
 
@@ -107,7 +119,7 @@ export const selectUserInfo = createSelector(
 	(userInfo) => ({
 		username: userInfo.username,
 		email: userInfo.email,
-		phone: userInfo.phone,
+		phone: userInfo.phone
 	})
 );
 

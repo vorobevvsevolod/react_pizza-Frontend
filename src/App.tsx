@@ -13,7 +13,14 @@ import {
 } from "./redux/slice/productSlice";
 import {fetchDopProduct} from "./redux/slice/dopProductSlice";
 import Cart from "./componets/UI/Cart";
-import {clearTokenUser, fetchOrders, fetchUserInfo, getTokenByCookie, setTokenUser} from "./redux/slice/UserSlice";
+import {
+    clearTokenUser,
+    fetchOrders,
+    fetchOrderStatus,
+    fetchUserInfo,
+    getTokenByCookie,
+    setTokenUser
+} from "./redux/slice/UserSlice";
 import {addProductInCart, fetchCart} from "./redux/slice/cartSlice";
 import {
     fetchTypesAndSizes, openFullProduct, selectActiveTypePizza,
@@ -88,7 +95,7 @@ function App() {
 
     React.useEffect(() =>{
 		dispatch(getTokenByCookie())
-
+        dispatch(fetchOrderStatus())
 		dispatch(fetchProductsTypes())
         dispatch(fetchTypesAndSizes())
         dispatch(fetchDopProduct())
@@ -154,7 +161,7 @@ function App() {
             paramsToString()
         }
 
-    },[activeType, currentPage, search])
+    },[activeType, currentPage, search ])
 
     React.useEffect(()=>{
         if(statusProducts !== StatusFetch.START) paramsToString(arrayFullProduct.id)

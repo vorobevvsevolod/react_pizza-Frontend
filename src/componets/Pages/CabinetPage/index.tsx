@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import styles from './cabinetPage.module.scss'
@@ -15,12 +15,14 @@ import {
 import UserAxios from "../../../axios/User-axios";
 import OrangeButton from "../../UI/Buttons/OrangeButton/orangeButton";
 import {RootState, useAppDispatch} from "../../../redux";
+import formatDate from "../../../Utilities/FormatDate";
 
 function CabinetPage (){
 	const navigate = useNavigate();
 	const userInfo = useSelector(selectUserInfo)
 	const { status, orders} = useSelector((state: RootState) => state.userInfo)
 	const dispatch = useAppDispatch();
+    const orderStatus = useSelector((state: RootState) => state.userInfo.orderStatus)
 	
 	const exitFromAccount = () => {
 		 dispatch(clearTokenUser())
@@ -47,18 +49,7 @@ function CabinetPage (){
 		}
 	}
 
-    function formatDate(dateString: string): string {
-        const date: Date = new Date(dateString);
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        };
-        return date.toLocaleDateString('ru-RU', options);
-    }
+
 
 	return(
 		<>
@@ -85,7 +76,7 @@ function CabinetPage (){
 								<th className={styles.table_col}>Сумма</th>
 								<th className={styles.table_col}>Статус</th>
 								<th className={styles.table_col}>Доставка</th>
-								<th className={styles.table_col}>Товары</th>
+								<th className={styles.table_col}></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -94,9 +85,9 @@ function CabinetPage (){
 									<td className={styles.table_col} >{order.id}</td>
 									<td className={styles.table_col} >{formatDate(order.createdAt)}</td>
 									<td className={styles.table_col} >{order.total_price} ₽</td>
-									<td className={styles.table_col} >{order.status}</td>
+									<td className={styles.table_col} >{orderStatus?.find(item => item.id === order.orderStatusId)?.name}</td>
 									<td style={{fontSize: '13px'}} className={styles.table_col} >{order.address}</td>
-									<td className={styles.table_col} ><span>Посмотреть</span></td>
+									<td className={styles.table_col} ><span onClick={() => navigate(`/order/${userInfo.phone.slice(1)}-${order.id}`)}>Посмотреть</span></td>
 								</tr>
 							))}
 							</tbody>

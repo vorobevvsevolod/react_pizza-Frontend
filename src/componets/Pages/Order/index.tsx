@@ -83,8 +83,8 @@ const OrderPage: React.FC = () => {
 
                 })
 
-                OrdersAxios.create({products: products, address: address?.value}).then(res =>{
-                    navigate('/home')
+                OrdersAxios.create({products: products, address: address?.value, phone: userInfo.phone ? userInfo.phone : phoneNoAuth}).then(res =>{
+                    navigate(`/order/${userInfo.phone.slice(1) ? userInfo.phone.slice(1) : phoneNoAuth}-${res.id}`)
                 })
 
             } else alert('Необходимо указать номер телефона иначе мы не сможем с вами связаться!!!')
@@ -105,7 +105,7 @@ const OrderPage: React.FC = () => {
             <div className={styles.section}>
                 <div className={styles.section_title}>Контакты</div>
 
-                {(userInfo.email && userInfo.username) ?
+                {(userInfo.email && userInfo.username && userInfo.phone) ?
                     <>
                         <InputCabinet typeInput='text' value={userInfo.username} title='Имя' onChangeUserInfo={changeUserInfo}/>
                         <InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта' onChangeUserInfo={changeUserInfo}/>
