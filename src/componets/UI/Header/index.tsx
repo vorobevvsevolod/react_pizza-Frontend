@@ -30,7 +30,19 @@ const Header: React.FC = () => {
 						</div>
 					</div>
 				</Link>
-				
+                <div className={styles.header_left}>
+                    <div className={styles.link}>
+                        <Link to="/ordersSearch" >
+                            Найти заказ
+                        </Link>
+                    </div>
+
+                    <div className={styles.link}>
+                        <Link to="/contact" >
+                            О нас
+                        </Link>
+                    </div>
+                </div>
 				<div className={styles.header_left}>
 					<div onClick={() => dispatch(setShowCart())}>
 						{
@@ -72,6 +84,7 @@ const Header: React.FC = () => {
 								: <a href="#" className="button button--cart">Корзина</a>)
 						}
 					</div>
+
 					{(token) ?
 						<Link to="/cabinet">
 							<button className={styles.header_cabButton}>

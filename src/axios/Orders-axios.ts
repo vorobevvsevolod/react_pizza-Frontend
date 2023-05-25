@@ -20,6 +20,15 @@ class OrdersAxios {
 			}
 		}catch (e) { console.log(e) }
 	}
+
+    static async Search(phone:string) {
+        try {
+            if(phone){
+                const { data } = await  axios.get(`api/orders/search?phone=${phone}`)
+                return data.message
+            }
+        }catch (e) { console.log(e) }
+    }
 }
 
 

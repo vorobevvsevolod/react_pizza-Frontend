@@ -79,8 +79,9 @@ const FullPizza = () => {
 				}
 			});
 		}
-		
-		traverseSizes();
+
+        console.log(sizesArray);
+        traverseSizes();
         return sizesArray
 	}
 	

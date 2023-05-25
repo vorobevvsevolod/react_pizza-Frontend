@@ -47,7 +47,7 @@ const Cart = () => {
 							<div className={styles.bottom}>
 								<div className={styles.bottom_info}>
 									<div className={styles.bottom_info_container}>
-										<span>Начислим додокоины</span> <span>+ {Math.round(totalPrice() * 0.05)}
+										<span>Начислим коины</span> <span>+ {Math.round(totalPrice() * 0.05)}
 										<svg width={15} height={15} fill="none" viewBox="0 0 16 16" className="dodocoin">
 								<path fillRule="evenodd" clipRule="evenodd"
 								      d="M7.5.75c.41 0 .75.34.75.75V3h.25a5 5 0 010 10h-.25v1.5a.75.75 0 01-1.5 0V13H4.07c-.38 0-.56 0-.7-.07a.67.67 0 01-.3-.3C3 12.5 3 12.32 3 11.94V4.07c0-.38 0-.56.07-.7a.67.67 0 01.3-.3C3.5 3 3.68 3 4.06 3h2.68V1.5c0-.41.34-.75.75-.75zm-3 10.75h4a3.5 3.5 0 100-7h-4v7z"

@@ -14,6 +14,7 @@ import OrangeButton from "../../UI/Buttons/OrangeButton/orangeButton";
 import OrdersAxios from "../../../axios/Orders-axios";
 
 import 'react-dadata/dist/react-dadata.css';
+import InputDostavka from "../../UI/InputDostavka";
 const OrderPage: React.FC = () => {
     const cart = useSelector(selectCart)
     const navigate = useNavigate()
@@ -54,7 +55,8 @@ const OrderPage: React.FC = () => {
     const submitOrder = () => {
 
 
-            if (userInfo.phone !== '' || phoneNoAuth !== '') {
+            if (userInfo.phone !== '' || phoneNoAuth !== '' && address?.value !== '') {
+                console.log(address?.value);
                 let products: {
                     price: number;
                     quantity: number;
@@ -84,15 +86,11 @@ const OrderPage: React.FC = () => {
                 })
 
                 OrdersAxios.create({products: products, address: address?.value, phone: userInfo.phone ? userInfo.phone : phoneNoAuth}).then(res =>{
-                    navigate(`/order/${userInfo.phone.slice(1) ? userInfo.phone.slice(1) : phoneNoAuth}-${res.id}`)
+                    navigate(`/order/${userInfo.phone.slice(1) ? userInfo.phone.slice(1) : phoneNoAuth[0] === "+" ? phoneNoAuth.slice(1) : phoneNoAuth}-${res.id}`)
                 })
 
-            } else alert('Необходимо указать номер телефона иначе мы не сможем с вами связаться!!!')
+            } else alert('Необходимо указать номер телефона и адрес доставки!!!')
     }
-
-    React.useEffect(()=>{
-        console.log(address);
-    },[address])
 
     return (
         <div>
@@ -111,7 +109,11 @@ const OrderPage: React.FC = () => {
                         <InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта' onChangeUserInfo={changeUserInfo}/>
                         <InputCabinet typeInput='tel' value={userInfo.phone} title='Номер телефона' onChangeUserInfo={changeUserInfo}/>
                         {(userInfo.phone === '') && <i> Нужно указать номер телефона</i>}
-                    </> : <InputAddress title='Номер телефона' onChange={(value: string) => setPhoneNoAuth(value)}/>
+                    </> : <InputDostavka name={"phone"} title='Номер телефона' value={phoneNoAuth} setValue={(value: string)  => {
+                        if(value[0] !== "+") setPhoneNoAuth(`+${value}`);
+                        else setPhoneNoAuth(value)
+
+                    }}/>
                 }
             </div>
 
