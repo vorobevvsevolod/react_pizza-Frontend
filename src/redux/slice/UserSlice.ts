@@ -77,7 +77,8 @@ const UserSlice = createSlice({
 	    clearInfoUser: state => {
 		    state.username = '';
 		    state.email = '';
-		    state.phone = ''
+		    state.phone = '';
+			state.orders = [];
 	    }
 
 
@@ -125,4 +126,4 @@ export const selectUserInfo = createSelector(
 
 
 export const TokenUserReducer = UserSlice.reducer;
-export const {getTokenByCookie, clearTokenUser, changeEmailUser, changePhone, changeUsername, setTokenUser} = UserSlice.actions;
+export const {getTokenByCookie, clearTokenUser, changeEmailUser, changePhone, changeUsername, setTokenUser, clearInfoUser} = UserSlice.actions;

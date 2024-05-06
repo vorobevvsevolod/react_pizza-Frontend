@@ -6,16 +6,17 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from './cabinetPage.module.scss'
 import InputCabinet from "../../UI/inputCabinet";
 import {
-    changeEmailUser,
-    changePhone,
-    changeUsername,
-    clearTokenUser,
-    selectUserInfo
+	changeEmailUser,
+	changePhone,
+	changeUsername, clearInfoUser,
+	clearTokenUser,
+	selectUserInfo
 } from "../../../redux/slice/UserSlice";
 import UserAxios from "../../../axios/User-axios";
 import OrangeButton from "../../UI/Buttons/OrangeButton/orangeButton";
 import {RootState, useAppDispatch} from "../../../redux";
 import formatDate from "../../../Utilities/FormatDate";
+import {ClearCart} from "../../../redux/slice/cartSlice";
 
 function CabinetPage (){
 	const navigate = useNavigate();
@@ -25,7 +26,9 @@ function CabinetPage (){
     const orderStatus = useSelector((state: RootState) => state.userInfo.orderStatus)
 	
 	const exitFromAccount = () => {
-		 dispatch(clearTokenUser())
+		 dispatch(clearTokenUser());
+		 dispatch(ClearCart());
+		 dispatch(clearInfoUser());
 	}
 	const changeUserInfo = (value: string, type: string) =>{
 		switch (type){
@@ -49,16 +52,14 @@ function CabinetPage (){
 		}
 	}
 
-
-
 	return(
 		<>
 			<h2 className={styles.title}>Личные данные</h2>
 			{status === 'succeeded' &&
 				<>
-					<InputCabinet typeInput='text' value={userInfo.username} title='Имя' onChangeUserInfo={changeUserInfo}/>
-					<InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта'  onChangeUserInfo={changeUserInfo}/>
-					<InputCabinet typeInput='tel' value={userInfo.phone} title='Номер телефона'  onChangeUserInfo={changeUserInfo}/>
+					<InputCabinet typeInput='text' value={userInfo.username} title='Имя' onChangeUserInfo={changeUserInfo} validationRegex={/^[а-яА-ЯёЁ]+$/} errorMessage="Только буквы и цифры!"/>
+					<InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта'  onChangeUserInfo={changeUserInfo} validationRegex={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/} errorMessage="Неверная почта!"/>
+					<InputCabinet typeInput='tel' value={userInfo.phone} title='Номер телефона'  onChangeUserInfo={changeUserInfo} validationRegex={/^\+\d{11}$/} errorMessage="Неверный номер телефона!"/>
 					{(userInfo.phone === null) && <i> Нужно указать номер телефона</i>}
 				</>
 			}

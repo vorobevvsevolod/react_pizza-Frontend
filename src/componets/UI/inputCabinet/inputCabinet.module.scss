@@ -24,10 +24,11 @@
       color: rgb(171, 173, 186);
     }
   }
+
   .innerInput{
     position: absolute;
-    top: 10px;
-    left: 207px;
+    top: 12px;
+    left: 210px;
   }
 
   .cancelButton{
@@ -69,6 +70,14 @@
       border: 1px solid #ff6900;
       background-color: white;
     }
+
+    &_invalid{
+      border: 1px solid rgb(226, 9, 25);
+
+
+    }
   }
 }
+
+
 

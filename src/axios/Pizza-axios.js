@@ -43,6 +43,13 @@ class PizzaAxios {
 			return data.message
 		}catch (e) { console.log(e) }
 	}
+
+	static async clearBasket () {
+		try {
+			const { data } = await  axios.get(`/api/basketpizza/clear`)
+			return data.message
+		}catch (e) { console.log(e) }
+	}
 }
 
 

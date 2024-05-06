@@ -62,7 +62,7 @@ const OrderView:React.FC = () => {
 	                <>
 		                <div className={styles.info}> Время заказа: <span>{formatDate(order.createdAt)}</span></div>
 		                <div className={styles.info}> Адрес доставки: <span>{order.address}</span></div>
-		                <div className={styles.info}> Адрес доставки: <span>{order.total_price} ₽</span></div>
+		                <div className={styles.info}> Стоимость: <span>{order.total_price} ₽</span></div>
 	                </>
                 </>
             }

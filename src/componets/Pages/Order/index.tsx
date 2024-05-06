@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.scss'
 import {AddressSuggestions} from "react-dadata";
 import {useSelector} from "react-redux";
-import {selectCart} from "../../../redux/slice/cartSlice";
+import {ClearCart, selectCart} from "../../../redux/slice/cartSlice";
 import {useNavigate} from "react-router-dom";
 import {changeEmailUser, changePhone, changeUsername, selectUserInfo} from "../../../redux/slice/UserSlice";
 import Item from "../../UI/Cart/Item";
@@ -15,6 +15,7 @@ import OrdersAxios from "../../../axios/Orders-axios";
 
 import 'react-dadata/dist/react-dadata.css';
 import InputDostavka from "../../UI/InputDostavka";
+import PizzaAxios from "../../../axios/Pizza-axios";
 const OrderPage: React.FC = () => {
     const cart = useSelector(selectCart)
     const navigate = useNavigate()
@@ -53,10 +54,7 @@ const OrderPage: React.FC = () => {
     }
 
     const submitOrder = () => {
-
-
-            if (userInfo.phone !== '' || phoneNoAuth !== '' && address?.value !== '') {
-                console.log(address?.value);
+        if ((userInfo.phone !== null && userInfo.username !== null) || phoneNoAuth !== '' && address?.value !== '') {
                 let products: {
                     price: number;
                     quantity: number;
@@ -89,7 +87,10 @@ const OrderPage: React.FC = () => {
                     navigate(`/order/${userInfo.phone.slice(1) ? userInfo.phone.slice(1) : phoneNoAuth[0] === "+" ? phoneNoAuth.slice(1) : phoneNoAuth}-${res.id}`)
                 })
 
-            } else alert('Необходимо указать номер телефона и адрес доставки!!!')
+                dispatch(ClearCart());
+                PizzaAxios.clearBasket();
+
+            } else alert('Необходимо указать номер телефона, ваше имя и адрес доставки!!!')
     }
 
     return (
@@ -103,12 +104,12 @@ const OrderPage: React.FC = () => {
             <div className={styles.section}>
                 <div className={styles.section_title}>Контакты</div>
 
-                {(userInfo.email && userInfo.username && userInfo.phone) ?
+                {(userInfo.email) ?
                     <>
-                        <InputCabinet typeInput='text' value={userInfo.username} title='Имя' onChangeUserInfo={changeUserInfo}/>
-                        <InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта' onChangeUserInfo={changeUserInfo}/>
-                        <InputCabinet typeInput='tel' value={userInfo.phone} title='Номер телефона' onChangeUserInfo={changeUserInfo}/>
-                        {(userInfo.phone === '') && <i> Нужно указать номер телефона</i>}
+                        <InputCabinet typeInput='text' value={userInfo.username} title='Имя' onChangeUserInfo={changeUserInfo} validationRegex={/^[а-яА-ЯёЁ]+$/} errorMessage="Только буквы и цифры!"/>
+                        <InputCabinet typeInput='email' value={userInfo.email} title='Эл.почта'  onChangeUserInfo={changeUserInfo} validationRegex={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/} errorMessage="Неверная почта!"/>
+                        <InputCabinet typeInput='tel' value={userInfo.phone} title='Номер телефона'  onChangeUserInfo={changeUserInfo} validationRegex={/^\+\d{11}$/} errorMessage="Неверный номер телефона!"/>
+                        {(userInfo.phone === '') && <i> Нужно указать данные для связи!</i>}
                     </> : <InputDostavka name={"phone"} title='Номер телефона' value={phoneNoAuth} setValue={(value: string)  => {
                         if(value[0] !== "+") setPhoneNoAuth(`+${value}`);
                         else setPhoneNoAuth(value)

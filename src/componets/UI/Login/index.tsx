@@ -105,10 +105,9 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
             setTimeout(() => {
                 clearInterval(timerid);
             }, 5 * 1000);
-            UserAxios.login(value).then(res =>{
-
-                console.log(res);
-            })
+            UserAxios.login(value).then(res =>
+                console.log(res)
+            );
 
         }
     }

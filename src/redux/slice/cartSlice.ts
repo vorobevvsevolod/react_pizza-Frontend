@@ -31,6 +31,9 @@ const CartSlice = createSlice({
         setShowCart: (state) =>{
             state.show = !state.show;
         },
+        ClearCart: (state) =>{
+            state.cart = [];
+        },
         addProductInCart: (state, action: PayloadAction<ICartItem>) =>{
             const { id } = action.payload;
             if(!id){
@@ -94,5 +97,6 @@ export const {
     addProductInCart,
     deleteProductCart,
     updateQuantityProductInCart,
-    deleteDopProductCart
+    deleteDopProductCart,
+    ClearCart
 } = CartSlice.actions;
