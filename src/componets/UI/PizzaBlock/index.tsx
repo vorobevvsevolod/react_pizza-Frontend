@@ -10,8 +10,10 @@ import CounterPizzas from "../CounterPizzas";
 import {AddProductInCartContext} from "../../../App";
 import {selectCart} from "../../../redux/slice/cartSlice";
 import {IProduct} from "../../../redux/interface/IProduct";
+import {ICombos} from "../../../redux/interface/Combos/ICombos";
 import {ICartItem} from "../../../redux/interface/ICartItem";
 import {useAppDispatch} from "../../../redux";
+
 
 const PizzaBlock: React.FC <IProduct> = (props) => {
     const addInCart = React.useContext(AddProductInCartContext)
@@ -76,7 +78,7 @@ const PizzaBlock: React.FC <IProduct> = (props) => {
 						<div className={styles.text}>{props.description}</div>
 					</div>
 				</div>
-				
+
 				<div className={styles.bottom}>
 						<div className={styles.price}>{`${props.productsTypeId === 1 ? 'от' : ''}`} {props.price} ₽</div>
 						<div>
@@ -94,7 +96,7 @@ const PizzaBlock: React.FC <IProduct> = (props) => {
 						</div>
 					</div>
 			</div>
-			
+
 		</div>
 	);
 };

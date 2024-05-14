@@ -7,19 +7,28 @@ import FullAnotherProduct from "./FullAnotherProduct";
 import {selectArrayFullProduct, selectShowFullProduct} from "../../../redux/slice/fullProductSlice";
 import styles from "./fullProduct.module.scss";
 import {RootState} from "../../../redux";
+import ComboModal from "../Combos/ComboModal";
 
 const FullProduct = () => {
-	const activeTypeState = useSelector((state: RootState) => state.products.activeType)
+	const {activeType, activeCombo} = useSelector((state: RootState) => state.products)
 	const showFullProduct = useSelector(selectShowFullProduct);
 	const arrayFullProduct = useSelector(selectArrayFullProduct);
+
+
 
 	return (
 		<div className={showFullProduct ? styles.overlay : styles.overlay_hidden}>
 			
 			{
-				(arrayFullProduct.id)
-					? (showFullProduct && activeTypeState !== 1) ? <FullAnotherProduct/> : <FullPizza/>
+                activeCombo ?
+                    (
+                        showFullProduct  ? <ComboModal/> : <></>
+                    )
+                : (
+                    arrayFullProduct.id
+					? (showFullProduct && activeType !== 1) ? <FullAnotherProduct/> : <FullPizza/>
 					: <></>
+                )
 			}
 		</div>
 	);

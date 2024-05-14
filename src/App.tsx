@@ -5,6 +5,7 @@ import './scss/app.scss'
 import Header from "./componets/UI/Header";
 
 import {
+    fetchCombos,
     fetchProducts,
     fetchProductsTypes,
     selectStatusProducts,
@@ -24,7 +25,7 @@ import {
 import {addProductInCart, fetchCart} from "./redux/slice/cartSlice";
 import {
     fetchTypesAndSizes, openFullProduct, selectActiveTypePizza,
-    selectArrayFullProduct, setActiveTypesPizza,
+    selectArrayFullProduct, selectShowFullProduct, setActiveTypesPizza,
     setArrayFullProduct,
     setShowFullProduct
 } from "./redux/slice/fullProductSlice";
@@ -46,6 +47,7 @@ function App() {
 	const { status, token } = useSelector((state: RootState) => state.userInfo)
     const arrayFullProduct = useSelector((state: RootState) => state.fullProduct.product)
     const { activeType, currentPage, search } = useSelector((state: RootState) => state.products)
+    const showFullProduct = useSelector(selectShowFullProduct);
     const activeTypePizza = useSelector(selectActiveTypePizza)
 
     const navigate = useNavigate()
@@ -53,27 +55,44 @@ function App() {
 
     const addInCart = React.useCallback(  (obj: ICartItem): void => {
         let data;
-        if(obj.typeProduct !== 1){
+        if(obj.productsCombo?.array.length){
             data = {
-                productId: obj.productId,
-                description: obj.description
+                basketCombos: obj.productsCombo,
+                description: obj.composition
             }
-        }else{
-            data = {
-                pizzasSizedId: obj.pizzasSizedId,
-                description: obj.description,
-                dopProducts: obj.dopProducts
-            }
-            dispatch(setShowFullProduct())
-        }
-        if(token){
+            if(token){
 
-            PizzaAxios.add(data).then(res =>{
-                dispatch(addProductInCart({id: res, ...obj}))
-            });
+                PizzaAxios.add(data).then(res =>{
+                    dispatch(addProductInCart({id: res, ...obj}))
+                });
+            }else{
+                dispatch(addProductInCart(obj))
+            }
+
         }else{
-            dispatch(addProductInCart(obj))
+            if(obj.typeProduct !== 1){
+                data = {
+                    productId: obj.productId,
+                    description: obj.description
+                }
+            }else{
+                data = {
+                    pizzasSizedId: obj.pizzasSizedId,
+                    description: obj.description,
+                    dopProducts: obj.dopProducts
+                }
+                dispatch(setShowFullProduct())
+            }
+            if(token){
+
+                PizzaAxios.add(data).then(res =>{
+                    dispatch(addProductInCart({id: res, ...obj}))
+                });
+            }else{
+                dispatch(addProductInCart(obj))
+            }
         }
+
     }, [token]);
 
     const stringToParams = (str: string): {typeId: number, productId?: number, currentPage?: number} => {
@@ -99,6 +118,7 @@ function App() {
 		dispatch(fetchProductsTypes())
         dispatch(fetchTypesAndSizes())
         dispatch(fetchDopProduct())
+        dispatch(fetchCombos())
 
     }, [])
 
@@ -171,10 +191,12 @@ function App() {
         if(statusProducts !== StatusFetch.START && activeType === 1) paramsToString(activeTypePizza)
 
     }, [activeTypePizza])
+
+    React.useEffect(() =>{
+        if(showFullProduct) document.documentElement.classList.add('no-scroll');
+        else document.documentElement.classList.remove('no-scroll');
+    }, [showFullProduct])
     
-
-
-
     return (
 		<AddProductInCartContext.Provider value={addInCart}>
 			<div className="wrapper">

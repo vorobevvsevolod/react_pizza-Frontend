@@ -14,6 +14,8 @@ import DopInfo from "../DopInfo/indes";
 import {AddProductInCartContext} from "../../../../App";
 import { useAppDispatch} from "../../../../redux";
 import {IProductInfo} from "../../../../redux/interface/IProductInfo";
+
+
 import {IProduct} from "../../../../redux/interface/IProduct";
 
 type SizeAndTypes = {

@@ -21,10 +21,10 @@ const OrdersSearch: React.FC = () =>{
                 <i>Введите номер телефона</i>
                 <div className={styles.content__top__search_container}>
                     <InputDostavka value={search} setValue={(value: string) => {
-                        setSearch(value);
-                        if(value.length === 11){
-                            OrdersAxios.Search(value).then(res =>{
-                                console.log(res);
+                        if(value[0] !== "+") setSearch(`+${value}`);
+                        else setSearch(value)
+                        if(value.length === 12){
+                            OrdersAxios.Search(value.slice(1)).then(res =>{
                                 setOrders(res)
                             })
                         }

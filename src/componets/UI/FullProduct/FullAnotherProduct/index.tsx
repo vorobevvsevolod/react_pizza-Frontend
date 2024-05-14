@@ -23,7 +23,7 @@ const FullAnotherProduct = () => {
                 productId: arrayFullProduct.id,
                 dopProducts: [],
                 composition: arrayFullProduct.description,
-                description: `${arrayFullProduct.pizza_info ? arrayFullProduct.pizza_info.weight : ''}${arrayFullProduct.productsTypeId === 4 ? ' л' : " г"}`,
+                description: `${arrayFullProduct.pizza_info ?  arrayFullProduct.pizza_info.weight : ''}${arrayFullProduct.productsTypeId === 4 ? ' л' : " г"}`,
                 quantity: 1,
             } as ICartItem)
         }

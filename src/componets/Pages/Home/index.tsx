@@ -8,9 +8,10 @@ import {RootState, useAppDispatch} from "../../../redux";
 import styles from './styles.module.scss'
 import InputDostavka from "../../UI/InputDostavka";
 import {setCurrentPage, setSearchValue} from "../../../redux/slice/productSlice";
+import ComboBlock from "../../UI/Combos/ComboBlock";
 
 const Home = () => {
-	const {products, status, error, types, activeType, search} = useSelector((state: RootState) => state.products)
+	const {products, status, error, types, activeType, search, combos} = useSelector((state: RootState) => state.products)
     const dispatch = useAppDispatch();
 
 	return (
@@ -35,7 +36,11 @@ const Home = () => {
             <div className={styles.content__items}>
 				{
 					(status !== 'loading')
-						? products.map(item => <PizzaBlock key={item.id} {...item}/>)
+						? (
+                            activeType === 5
+                                ? combos.map(item => <ComboBlock key={item.id} {...item}/>)
+                                : products.map(item => <PizzaBlock key={item.id} {...item}/>)
+                        )
 						: [...new Array(8)].map((_, i) => <PizzaLoad key={i}/>)
 				}
 			</div>
