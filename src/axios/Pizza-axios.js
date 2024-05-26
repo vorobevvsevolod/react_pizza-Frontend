@@ -1,69 +1,63 @@
-import axios from './index'
-
-
+import axios from './axios'
 class PizzaAxios {
 	static async add(product) {
 		try {
-			if(product.basketCombos.array.length){
-				
-				const { data } = await  axios.post('/api/basketpizza', {
-					"comboId": product.basketCombos.comboId,
-					"description": product.description,
-					"basketCombos": product.basketCombos.array
-				})
-
-				return data.message
-				
-			}else {
-				if(product.productId){
-					const { data } = await  axios.post('/api/basketpizza', {
-						"productId": product.productId,
-						"description": product.description,
-						"dopProducts": product.dopProducts
-					})
-					return data.message
-				}else{
-					const { data } = await  axios.post('/api/basketpizza', {
-						"pizzasSizedId": product.pizzasSizedId,
-						"description": product.description,
-						"dopProducts": product.dopProducts
-					})
-					return data.message
-				}
+			let postData = {
+				description: product.description,
+				dopProducts: product.dopProducts
+			};
+			
+			if (product.basketCombos && product.basketCombos.array.length) {
+				postData.comboId = product.basketCombos.comboId;
+				postData.basketCombos = product.basketCombos.array;
+			} else if (product.productId) {
+				postData.productId = product.productId;
+			} else {
+				postData.pizzasSizedId = product.pizzasSizedId;
 			}
 			
-			
-		}catch (e) { console.log(e) }
+			const data  = await axios.post('/api/basketpizza', postData);
+			return data;
+		} catch (e) {
+			return(e.response);
+		}
 	}
 	
-	static async delete (id) {
+	static async delete(id) {
 		try {
-			const { data } = await  axios.delete(`/api/basketpizza/${id}`)
-			return data.message
-		}catch (e) { console.log(e) }
+			const data  = await axios.delete(`/api/basketpizza/${id}`);
+			return data;
+		} catch (e) {
+			return(e.response);
+		}
 	}
 	
-	static async update (id, quantity) {
+	static async update(id, quantity = 1) {
 		try {
-			const { data } = await  axios.put(`/api/basketpizza/update?id=${id}&quantity=${quantity}`)
-			return data.message
-		}catch (e) { console.log(e) }
+			const  data  = await axios.patch(`/api/basketpizza/update?id=${id}&quantity=${quantity}`);
+			return data;
+		} catch (e) {
+			return(e.response);
+		}
 	}
 	
-	static async deleteDopProduct (basketId, dopProductId) {
+	static async deleteDopProduct(basketId, dopProductId) {
 		try {
-			const { data } = await  axios.post(`/api/basketpizza/dopproduct?basketId=${basketId}&dopProductId=${dopProductId}`)
-			return data.message
-		}catch (e) { console.log(e) }
+			const  data  = await axios.post(`/api/basketpizza/dopproduct?basketId=${basketId}&dopProductId=${dopProductId}`);
+			return data;
+		} catch (e) {
+			return(e.response);
+		}
 	}
-
-	static async clearBasket () {
+	
+	static async clearBasket() {
 		try {
-			const { data } = await  axios.get(`/api/basketpizza/clear`)
-			return data.message
-		}catch (e) { console.log(e) }
+			const data = await axios.get(`/api/basketpizza/clear`);
+			return data;
+		} catch (e) {
+			return(e.response);
+		}
 	}
 }
-
 
 export default PizzaAxios;

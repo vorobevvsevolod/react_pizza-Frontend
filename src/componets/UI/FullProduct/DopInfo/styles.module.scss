@@ -9,12 +9,24 @@
 }
 
 .info {
+  &_container{
+    position: relative;
+    z-index: 1500;
+  }
   position: absolute;
   width: 280px;
   min-height: 45px;
   padding: 12px;
   border-radius: 10px;
   background-color: rgb(55, 53, 53);
+  right: -13px;
+  top: 38px;
+  z-index: 1500;
+
+  @media (max-width:650px) {
+    right: -10px;
+    top: -190px;
+  }
 
 
   span {
@@ -39,13 +51,19 @@
   &:after {
     display: block;
     position: absolute;
-    top: -4%;
-    right: 8%;
+    top: -3%;
+    right: 6%;
     content: '';
     width: 20px;
     height: 20px;
     background-color: rgb(55, 53, 53);
     transform: rotate(45deg);
     border-radius: 4px;
+
+    @media (max-width:650px) {
+      top: 165px;
+
+      right: 5%;
+    }
   }
 }

@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../axios/axios";
 import {ITypesPizza} from "../interface/ITypesPizzas";
 import {ISizesPizza} from "../interface/ISizesPizzas";
 import {StatusFetch} from "../interface/StatusFetch";
 import {IDopProduct} from "../interface/IDopProduct";
-import {RootState} from "../index";
+import {RootState} from "../redux";
 import {IProduct} from "../interface/IProduct";
 
 interface FullProductSliceState{

@@ -1,6 +1,8 @@
 .wrapper{
   display: flex;
   justify-content: center;
+
+  height: 520px;
 }
 
 .pizzaBlock{
@@ -9,6 +11,7 @@
   margin: 0 0 65px 7px;
 }
 .image{
+  height: 275px;
   animation: animation infinite 5s ease-in-out;
   @keyframes animation {
     0%{

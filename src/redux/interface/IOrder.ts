@@ -3,9 +3,9 @@ export interface IOrder{
     userId?: number;
     createdAt: string;
 
-    phone?: number;
+    phone: number;
     status: string;
     address: string;
     total_price: number;
-
+    nomer: string;
 }

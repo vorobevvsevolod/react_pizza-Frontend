@@ -1,6 +1,5 @@
 .wrapper {
   position: relative;
-  margin-right: 15px;
   .title{
     color: #888787;
     margin: 0 0 5px 5px;
@@ -8,6 +7,7 @@
   }
 
   .input{
+    width: 100%;
     font-size: 18px;
     border: 2px solid #949494;
     padding: 8px 11px 9px 11px;
@@ -16,5 +16,12 @@
       &:focus{
         border: 2px solid #ff6900;
       }
+
+    @media (max-width: 450px) {
+      font-size: 14px;
+      padding: 4px 5px 5px 5px;
+    }
   }
+
+
 }

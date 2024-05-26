@@ -1,0 +1,47 @@
+.errorModal{
+  position: fixed;
+
+  transition: top 0.2s ease-in-out;
+  background-color: white;
+  border: 1px solid #FF0033;
+  width: 60%;
+  min-height: 120px;
+  left: 50%;
+  transform: translatex(-50%);
+  border-radius: 10px;
+  z-index: 100000;
+  padding: 10px;
+  color: black;
+  font-weight: 500;
+  max-width: 500px;
+  text-align: center;
+
+  &_title{
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  &_text{
+    margin: 5px 0;
+    font-size: 20px;
+    color: #626262;
+  }
+
+  &_description{
+    color: #626262;
+      font-style: italic;
+    font-weight: 700;
+    span{
+      color: #999999;
+      font-weight: 500;
+    }
+  }
+
+  &_show{
+    top: 10px;
+  }
+
+  &_hidden{
+    top: -200px;
+  }
+}

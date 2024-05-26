@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import axios from "../../axios";
+import axios from "../../axios/axios";
 import {StatusFetch} from "../interface/StatusFetch";
-import {RootState} from "../index";
+import {RootState} from "../redux";
 import {IOrder} from "../interface/IOrder";
 import {IOrderStatus} from "../interface/IOrderStatus";
 
@@ -63,6 +63,9 @@ const UserSlice = createSlice({
             localStorage.setItem('token', action.payload);
             axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload}`;
         },
+        addOrder: (state, action: PayloadAction<IOrder>) => {
+            state.orders = [...state.orders, {...action.payload}]
+        },
 	    
 	    
 	    changeEmailUser: (state, action: PayloadAction<string>) =>{
@@ -103,9 +106,20 @@ const UserSlice = createSlice({
             .addCase(fetchOrders.fulfilled, (state, action) => {
                 state.orders = action.payload
             })
+            .addCase(fetchOrders.rejected, (state, action) => {
+                state.status = StatusFetch.FAILED;
+                if(action.error.message)
+                    state.error = action.error.message;
+            })
 
             .addCase(fetchOrderStatus.fulfilled, (state, action) => {
                 state.orderStatus = action.payload
+            })
+
+            .addCase(fetchOrderStatus.rejected, (state, action) => {
+                state.status = StatusFetch.FAILED;
+                if(action.error.message)
+                    state.error = action.error.message;
             })
 	}
 })

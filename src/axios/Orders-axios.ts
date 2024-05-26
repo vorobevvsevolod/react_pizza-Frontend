@@ -1,33 +1,27 @@
-import axios from './index'
+import axios from './axios'
 
 
 class OrdersAxios {
 	static async create(obj:any) {
-		try {
-			const { data } = await  axios.post(`/api/orders`, {
-				...obj
-			})
-			return data.message
-			
-		}catch (e) { console.log(e) }
-	}
-	
-	static async getByIdAndPhoneOrToken(id?:string, phone?:string) {
-		try {
-			if(phone){
-				const { data } = await  axios.get(`api/orders?phone=${phone}&id=${id}`)
-				return data.message
-			}
-		}catch (e) { console.log(e) }
+        try {
+            const  data  = await axios.post(`/api/orders`, obj);
+            return data;
+        } catch (e) {
+            return e.response
+        }
 	}
 
-    static async Search(phone:string) {
+    static async Search(nomer:string) {
         try {
-            if(phone){
-                const { data } = await  axios.get(`api/orders/search?phone=${phone}`)
-                return data.message
+            if (!nomer) {
+                throw new Error('Не передан номер телефона');
             }
-        }catch (e) { console.log(e) }
+            const  data  = await axios.get(`/api/orders/search?nomer=${nomer}`);
+            return data;
+        } catch (e) {
+            console.error(e);
+            throw new Error('Ошибка при поиске заказа по номеру телефона');
+        }
     }
 }
 

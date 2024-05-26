@@ -1,12 +1,12 @@
 import {Route, Routes} from "react-router-dom";
 
 import React from "react";
-import Home from "./componets/Pages/Home";
-import CabinetPage from "./componets/Pages/CabinetPage";
-import OrderPage from "./componets/Pages/Order";
-import OrderView from "./componets/Pages/OrderView";
-import OrdersSearch from "./componets/Pages/OrdersSearch";
-import Contact from "./componets/Pages/Contact";
+import Home from "./componets/Pages/Home/HomePage";
+import CabinetPage from "./componets/Pages/CabinetPage/CabinetPage";
+import OrderPage from "./componets/Pages/Order/OrderPage";
+import OrderView from "./componets/Pages/OrderView/OrderViewPage";
+import OrdersSearch from "./componets/Pages/OrdersSearch/OrderSearchPage";
+import Contact from "./componets/Pages/Contact/CantactPage";
 
 const Router = () => {
 	return (

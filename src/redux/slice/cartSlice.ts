@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../axios/axios";
 import { ICartItem } from "../interface/ICartItem";
-import {RootState} from "../index";
+import {RootState} from "../redux";
 import {StatusFetch} from "../interface/StatusFetch";
 
 

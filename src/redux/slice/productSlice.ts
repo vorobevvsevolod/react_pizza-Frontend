@@ -1,10 +1,11 @@
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../axios/axios";
 import {IProduct} from "../interface/IProduct";
 import {StatusFetch} from "../interface/StatusFetch";
 import {ITypesProducts} from "../interface/ITypesProducts";
-import {RootState} from "../index";
+import {RootState} from "../redux";
 import {ICombos} from "../interface/Combos/ICombos";
+import DOMPurify from 'dompurify';
 
 interface ProductSliceState {
     products: IProduct[],
@@ -33,7 +34,7 @@ export const fetchProducts = createAsyncThunk<
     const state = thunkAPI.getState();
     const offset = (state.products.currentPage - 1) * state.products.limit;
     const { data } = await axios.get(
-        `/api/products?typeId=${state.products.activeType}&limit=${state.products.limit}&search=${state.products.search}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
+        `/api/products?typeId=${DOMPurify.sanitize(state.products.activeType)}&limit=${DOMPurify.sanitize(state.products.limit)}&search=${DOMPurify.sanitize(state.products.search)}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
     );
     return {
         products: data.message.products as IProduct[],
@@ -140,5 +141,6 @@ export const selectStatusProducts = createSelector(
     (state: RootState) => state.products.status,
     (status) => status
 );
+
 
 export const { setActiveType, setCurrentPage, setSearchValue, setActiveCombo } = ProductsSlice.actions;

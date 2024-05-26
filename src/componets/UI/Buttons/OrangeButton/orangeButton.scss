@@ -13,6 +13,10 @@
     color: white;
     position: relative;
     top: -1px;
+
+    @media (max-width:800px) {
+      font-size: 13px;
+    }
   }
   &_active{
     background-color: #FF6900;

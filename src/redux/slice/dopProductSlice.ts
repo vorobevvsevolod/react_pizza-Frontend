@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSelector, createSlice} from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../axios/axios";
 import {StatusFetch} from "../interface/StatusFetch";
 import {IDopProduct} from "../interface/IDopProduct";
-import {RootState} from "../index";
+import {RootState} from "../redux";
 
 
 interface DopProductsSliceState {

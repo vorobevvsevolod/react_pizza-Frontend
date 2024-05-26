@@ -8,10 +8,14 @@
   width: 409px;
   min-height: 399px;
   padding: 32px;
-  //background-color: rgb(243, 243, 247);
   border-radius: 20px;
   z-index: 1000;
   background: white;
+
+  @media (max-width: 425px) {
+    width: 355px;
+    padding: 23px;
+  }
 
   &_title{
     font-size: 40px;
@@ -59,7 +63,7 @@
   right: 0;
 
   transition: all 0.25s ease-in-out;
-  z-index: 100;
+  z-index: 1200;
 
   &_hidden {
     visibility: hidden;
@@ -85,6 +89,14 @@
 
     &:hover {
       transform: scale(1.2);
+    }
+
+    @media (max-width: 550px) {
+      top: 4%;
+      right: 3%;
+      height: 30px;
+      width: 30px;
+      filter: invert(0);
     }
   }
 }
@@ -133,5 +145,11 @@
 
   &:focus {
     border-color: rgb(255, 105, 0);
+  }
+
+  @media (max-width: 425px) {
+    width: 45px;
+    height: 55px;
+    margin-right: 6px;
   }
 }
