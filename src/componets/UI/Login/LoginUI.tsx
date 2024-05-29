@@ -8,7 +8,7 @@ import DOMPurify from 'dompurify';
 import {ShowErrorModalContext} from "../../../App";
 
 const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, setShowLogin}) => {
-    const [value, setValue] = React.useState<string>("");
+    const [email, setEmail] = React.useState<string>("");
     const [isValid, setIsValid] = React.useState<boolean>(false);
     const [next, setNext] = React.useState<boolean>(false)
     const [digits, setDigits] = React.useState(["", "", "", "", "", ""]); // массив для хранения введенных цифр
@@ -64,7 +64,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
     const inChangeValue: React.ChangeEventHandler<HTMLInputElement> = (event) =>{
         const inputValue = event.target.value;
         const cleanedValue = DOMPurify.sanitize(inputValue);
-        setValue(cleanedValue);
+        setEmail(cleanedValue);
         setIsValid(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(cleanedValue));
     }
 
@@ -75,16 +75,16 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
         if (digits.every((digit) => digit !== "")) {
             inputRefs.current[5].blur();
             const code = digits.join("");
-            UserAxios.login("", code).then(res =>{
+            UserAxios.login(email, code).then(res =>{
                 if(res.status === 404){
                     setIsValidCode(true);
-                } else if(res.status === 200 ){
+                } else if(res.status === 200 && res.data.message){
                     dispatch(setTokenUser(res.data.message))
                     setShowLogin(!showLogin)
                     setNext(!next);
                     setDigits(["", "", "", "", "", ""])
                     setTimer(5)
-                    setValue("")
+                    setEmail("")
                 } else errorHandler({data: res, errorText: 'Ошибка аутентификации'});
 
             })
@@ -123,7 +123,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
                 setTimer(prevTimer => prevTimer - 1);
             }, 1000);
 
-            UserAxios.login(value).then(res => {
+            UserAxios.login(email).then(res => {
                 if(res.status !== 200){
                     errorHandler({data: res, errorText: 'Ошибка аутентификации'});
                 }
@@ -140,7 +140,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
                 <img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => setShowLogin(!showLogin)}/>
                 <div className={styles.modal_title}>Вход на сайт</div>
                 {next
-                    ? <div className={styles.modal_subtitle}>   Код отправили сообщением на <b>{value}</b> <span onClick={() => setNext(!next)}>Изменить</span>  </div>
+                    ? <div className={styles.modal_subtitle}>   Код отправили сообщением на <b>{email}</b> <span onClick={() => setNext(!next)}>Изменить</span>  </div>
                     : <div className={styles.modal_subtitle}>  Подарим подарок на день рождения, сохраним адрес доставки и расскажем об акциях </div>
                 }
                 {
@@ -163,7 +163,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
                     :   <div className={styles.modal_container_input}>
                             <div className={styles.input_subtitle}>Электронная почта</div>
                             <input  className={styles.input}
-                                    value={value}
+                                    value={email}
                                     onChange={inChangeValue}
                                     type="email"
                                     placeholder={"example@mail.ru"}

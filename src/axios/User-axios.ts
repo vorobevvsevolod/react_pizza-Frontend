@@ -1,17 +1,18 @@
 import axios from './axios'
 
 class UserAxios {
-	static async login(email?:string, code?:string) {
+	static async login(email:string, code?:string) {
 		try {
 			const dataPost: {
-                email?:string,
+                email:string,
                 code?:string
             } = {};
 			
-			if (email) {
+			if (code) {
 				dataPost.email = email;
+                dataPost.code = code;
 			} else {
-				dataPost.code = code;
+                dataPost.email = email;
 			}
 
 			const data = await axios.post('/api/user/login', dataPost);
