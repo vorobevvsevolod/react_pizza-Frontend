@@ -43,7 +43,11 @@ class PizzaAxios {
 	
 	static async deleteDopProduct(basketId, dopProductId) {
 		try {
-			const  data  = await axios.post(`/api/basketpizza/dopproduct?basketId=${basketId}&dopProductId=${dopProductId}`);
+			let postData = {
+				basketId: basketId,
+				dopProductId: dopProductId
+			};
+			const  data  = await axios.post(`/api/basketpizza/dopproduct`, postData);
 			return data;
 		} catch (e) {
 			return(e.response);

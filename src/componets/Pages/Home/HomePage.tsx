@@ -26,22 +26,21 @@ const Home = () => {
 			<div className={styles.content__top}>
                 <h1 className={styles.content__title}>{types && types.length ? types[activeType - 1]?.name : ''}</h1>
                 <div className={styles.content__top__search_container}>
-                    <InputDostavka value={search} setValue={(value: string) => {
-                        setTimeout(() => {
-                            if (/^[а-яА-ЯёЁ0-9\s-]+$/.test(value)|| value === "") {
-                                value = DOMPurify.sanitize(value);
-                                dispatch(setSearchValue(value));
-                                dispatch(setCurrentPage(1));
-                            } else {
-                                console.log("Недопустимые символы в строке");
-                            }
-                        }, 50);
-
-
+                    {
+                        activeType !== 5
+                            ? <InputDostavka value={search} setValue={(value: string) => {
+                                    setTimeout(() => {
+                                        if (/^[а-яА-ЯёЁ0-9\s-]+$/.test(value)|| value === "") {
+                                            value = DOMPurify.sanitize(value);
+                                            dispatch(setSearchValue(value));
+                                            dispatch(setCurrentPage(1));
+                                        }
+                                    }, 50);
+                                }
+                                }
+                                     placeholder={'Поиск...'}
+                                /> : <></>
                     }
-                    }
-                         placeholder={'Поиск...'}
-                    />
                     {search && <img src="/img/cross.svg" alt="" onClick={() => dispatch(setSearchValue(""))}/>}
                 </div>
             </div>

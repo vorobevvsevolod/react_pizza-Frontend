@@ -34,11 +34,11 @@ export const fetchProducts = createAsyncThunk<
     const state = thunkAPI.getState();
     const offset = (state.products.currentPage - 1) * state.products.limit;
     const { data } = await axios.get(
-        `/api/products?typeId=${DOMPurify.sanitize(state.products.activeType)}&limit=${DOMPurify.sanitize(state.products.limit)}&search=${DOMPurify.sanitize(state.products.search)}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
+        `/api/products?typeId=${DOMPurify.sanitize(state.products.activeType)}&limit=${DOMPurify.sanitize(state.products.limit)}${ state.products.search ? '&search=' + DOMPurify.sanitize(state.products.search) : ''}&offset=${offset}${option.isCount ? '&isCount=true' : ''}`
     );
     return {
         products: data.message.products as IProduct[],
-        count: data.message.count ? data.message.count : state.products.totalCount,
+        count: data.message.count ? data.message.count : 0,
     };
 });
 

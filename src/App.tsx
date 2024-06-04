@@ -50,7 +50,7 @@ export const ShowErrorModalContext = React.createContext<ErrorModalContextType |
 
 function App() {
 	const dispatch = useAppDispatch();
-	const { status, token, error } = useSelector((state: RootState) => state.userInfo)
+	const { status, token, error, showLogin } = useSelector((state: RootState) => state.userInfo)
     const arrayFullProduct = useSelector((state: RootState) => state.fullProduct.product)
     const { activeType, currentPage, search, products } = useSelector((state: RootState) => state.products)
     const showFullProduct = useSelector(selectShowFullProduct);
@@ -250,31 +250,35 @@ function App() {
     }, [activeTypePizza])
 
     React.useEffect(() => {
-        if (showFullProduct || showCart) {
-            document.documentElement.classList.add('no-scroll');
-        } else {
-            document.documentElement.classList.remove('no-scroll');
-        }
-    }, [showFullProduct, showCart]);
+        const checkWrapperHeight = () => {
+            const wrapper = document.getElementsByClassName('wrapper')[0];
+            return wrapper && wrapper.clientHeight < document.documentElement.clientHeight - 100;
+        };
 
-    React.useEffect(() => {
-        if(status && statusProducts){
+        if (status && statusProducts) {
             if ((status !== StatusFetch.SUCCESS && status !== StatusFetch.LOADING) ||
                 (statusProducts !== StatusFetch.SUCCESS && statusProducts !== StatusFetch.LOADING)) {
                 setShowErrorModalState({
                     show: true,
-                    errorText: error ? error : 'Ошибка подлючения',
+                    errorText: error || 'Ошибка подключения',
                     errorDescription: 'Нет ответа от сервера, перезагрузите страницу'
                 });
             }
-            console.log(products.length);
-            if(statusProducts === StatusFetch.LOADING || products.length <= 4){
-                document.documentElement.classList.add('no-scroll');
-            } else {
-                document.documentElement.classList.remove('no-scroll');
-            }
         }
-    },[status, statusProducts])
+
+        const shouldNoScroll = (statusProducts === StatusFetch.LOADING) ||
+            checkWrapperHeight() ||
+            showFullProduct ||
+            showCart ||
+            showLogin;
+
+        if (shouldNoScroll) {
+            document.documentElement.classList.add('no-scroll');
+        } else {
+            document.documentElement.classList.remove('no-scroll');
+        }
+    }, [status, statusProducts, location.pathname, products.length, showFullProduct, showCart, showLogin ]);
+
 
     return (
         <ShowErrorModalContext.Provider value={{ showErrorModalState, errorHandler }}>

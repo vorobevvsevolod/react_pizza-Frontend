@@ -2,7 +2,7 @@ import React from 'react';
 import styles from "./styles.module.scss"
 import { useSelector} from "react-redux";
 import {selectCart, setShowCart} from "../../../redux/slice/cartSlice";
-import {selectToken, selectUserInfo} from "../../../redux/slice/UserSlice";
+import {selectShowLogin, selectToken, selectUserInfo, setShowLogin} from "../../../redux/slice/UserSlice";
 import {Link, useLocation} from "react-router-dom";
 import {useAppDispatch} from "../../../redux/redux";
 import Login from "../Login/LoginUI";
@@ -14,7 +14,6 @@ const Header: React.FC = () => {
 	const cart = useSelector(selectCart)
 	const token = useSelector(selectToken)
     const userInfo = useSelector(selectUserInfo)
-	const [showLogin, setShowLogin] = React.useState<boolean>(false)
     const location = useLocation();
     const totalPrice = () =>{
 		return cart.reduce((sum : number, obj) => sum + (obj.price * obj.quantity), 0)
@@ -101,7 +100,7 @@ const Header: React.FC = () => {
 
                                 </button>
                             </Link> :
-                            <button className={styles.header_cabButton} onClick={() => setShowLogin(!showLogin)}>
+                            <button className={styles.header_cabButton} onClick={() => dispatch(setShowLogin())}>
                                 <svg version="1.1" id="mdi-face" width="30" height="30" viewBox="0 0 24 24" >
                                     <path d="M9,11.75A1.25,1.25 0 0,0 7.75,13A1.25,1.25 0 0,0 9,14.25A1.25,1.25 0 0,0 10.25,13A1.25,1.25 0 0,0 9,11.75M15,11.75A1.25,1.25 0 0,0 13.75,13A1.25,1.25 0 0,0 15,14.25A1.25,1.25 0 0,0 16.25,13A1.25,1.25 0 0,0 15,11.75M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z" />
                                 </svg>
@@ -109,7 +108,7 @@ const Header: React.FC = () => {
                             </button>
                         }
 
-                        <Login showLogin={showLogin} setShowLogin={setShowLogin}/>
+                        <Login/>
                     </div>
 
                 </div>

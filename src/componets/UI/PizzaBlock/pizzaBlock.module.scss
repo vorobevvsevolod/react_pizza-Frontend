@@ -56,13 +56,15 @@
   font-weight: 900;
   margin-bottom: 20px;
   text-align: left;
+  max-height: 55px;
 }
 
 .text{
-  text-align: left;
+  text-align: justify;
   overflow: auto;
   font-size: 15px;
   height: 80px;
+  padding-right: 4px;
 
   &::-webkit-scrollbar {
     width: 4px;

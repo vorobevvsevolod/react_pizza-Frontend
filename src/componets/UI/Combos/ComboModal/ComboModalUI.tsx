@@ -226,9 +226,12 @@ const ComboModal: React.FC = () => {
 
                                             if(productArray)
                                                 return(
-                                                <div className={`${styles.item_right_content_prosuctSelect} ${activeProductRight === product.id ? styles.item_right_content_prosuctSelect_active : ''}`} onClick={() => {
-                                                    setShowArrayProductMobile(true);
-                                                    setActiveProductRight(product.id)}
+                                                <div key={index} className={`${styles.item_right_content_prosuctSelect} ${activeProductRight === product.id ? styles.item_right_content_prosuctSelect_active : ''}`} onClick={() => {
+
+                                                    if( activeProductRight !== product.id){
+                                                        setShowArrayProductMobile(true);
+                                                        setActiveProductRight(product.id)}
+                                                    }
                                                 }>
                                                     {activeProductRight === product.id ? <div className={styles.item_right_content_prosuctSelect_treangle}></div> : <></>}
                                                     <div className={styles.item_right_content_prosuctSelect_top}>
@@ -245,8 +248,6 @@ const ComboModal: React.FC = () => {
                                                             {
                                                                 productArray.increase ? <div className={styles.item_right_content_prosuctSelect_top_dopPrice}>+{productArray.increase} ₽ </div> : ''
                                                             }
-
-
                                                         </div>
 
                                                     </div>

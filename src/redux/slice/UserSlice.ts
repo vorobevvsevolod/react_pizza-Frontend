@@ -15,7 +15,8 @@ interface UserSliceState{
     orderStatus: IOrderStatus[];
 
     status: StatusFetch;
-    error: string
+    error: string,
+    showLogin: boolean
 }
 
 export const fetchUserInfo = createAsyncThunk('userInfo/fetchUserInfo', async () =>{
@@ -43,7 +44,8 @@ const UserSlice = createSlice({
 	    orders: [],
         orderStatus: [],
 	    status: StatusFetch.LOADING,
-	    error: ''
+	    error: '',
+        showLogin: false
     } as UserSliceState,
     reducers:{
         getTokenByCookie: state => {
@@ -82,7 +84,12 @@ const UserSlice = createSlice({
 		    state.email = '';
 		    state.phone = '';
 			state.orders = [];
-	    }
+	    },
+
+        setShowLogin: state => {
+            const bool = state.showLogin;
+            state.showLogin = !bool;
+        }
 
 
     },
@@ -138,6 +145,14 @@ export const selectUserInfo = createSelector(
 	})
 );
 
+export const selectShowLogin = createSelector(
+    (state: RootState) => state.userInfo,
+    (state) => ({
+        showLogin: state.showLogin,
+
+    })
+);
+
 
 export const TokenUserReducer = UserSlice.reducer;
-export const {getTokenByCookie, clearTokenUser, changeEmailUser, changePhone, changeUsername, setTokenUser, clearInfoUser} = UserSlice.actions;
+export const {getTokenByCookie, clearTokenUser, changeEmailUser, changePhone, changeUsername, setTokenUser, clearInfoUser, setShowLogin} = UserSlice.actions;

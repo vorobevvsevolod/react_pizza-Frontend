@@ -3,11 +3,12 @@ import styles from './styles.module.scss'
 import OrangeButtonUI from "../Buttons/OrangeButton/OrangeButtonUI";
 import UserAxios from "../../../axios/User-axios";
 import {useAppDispatch} from "../../../redux/redux";
-import {setTokenUser} from "../../../redux/slice/UserSlice";
+import {selectShowLogin, setShowLogin, setTokenUser} from "../../../redux/slice/UserSlice";
 import DOMPurify from 'dompurify';
 import {ShowErrorModalContext} from "../../../App";
+import {useSelector} from "react-redux";
 
-const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, setShowLogin}) => {
+const Login:React.FC = () => {
     const [email, setEmail] = React.useState<string>("");
     const [isValid, setIsValid] = React.useState<boolean>(false);
     const [next, setNext] = React.useState<boolean>(false)
@@ -17,6 +18,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
     const [timer, setTimer] = React.useState<number>(5)
     const dispatch = useAppDispatch();
     const { errorHandler } = useContext(ShowErrorModalContext);
+    const showLogin = useSelector(selectShowLogin)
     // обработчик изменения значения в input
     function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
         let { value } = e.target as HTMLInputElement;
@@ -80,7 +82,7 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
                     setIsValidCode(true);
                 } else if(res.status === 200 && res.data.message){
                     dispatch(setTokenUser(res.data.message))
-                    setShowLogin(!showLogin)
+                    dispatch(setShowLogin())
                     setNext(!next);
                     setDigits(["", "", "", "", "", ""])
                     setTimer(5)
@@ -135,9 +137,9 @@ const Login:React.FC <{showLogin: boolean, setShowLogin: any}> = ({showLogin, se
 
 
     return (
-        <div className={`${styles.overlay} ${showLogin ? styles.overlay_visible : styles.overlay_hidden}`}>
+        <div className={`${styles.overlay} ${showLogin.showLogin ? styles.overlay_visible : styles.overlay_hidden}`}>
             <div className={styles.modal}>
-                <img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => setShowLogin(!showLogin)}/>
+                <img className={styles.overlay_svg} src="/img/cross.svg" alt="" onClick={() => dispatch(setShowLogin())}/>
                 <div className={styles.modal_title}>Вход на сайт</div>
                 {next
                     ? <div className={styles.modal_subtitle}>   Код отправили сообщением на <b>{email}</b> <span onClick={() => setNext(!next)}>Изменить</span>  </div>

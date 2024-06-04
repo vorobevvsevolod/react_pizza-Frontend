@@ -367,5 +367,13 @@ body {
   }
 }
 
+.paddingRight{
+  padding-right: 8px;
+
+  @media (max-width:900px) {
+    padding-right: 0px;
+  }
+}
+
 
 

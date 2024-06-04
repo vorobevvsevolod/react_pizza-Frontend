@@ -94,7 +94,7 @@ const OrderPage: React.FC = () => {
                             if(res.status === 200){
                                 dispatch(ClearCart());
                                 PizzaAxios.clearBasket();
-                                console.log(res);
+
                                 navigate(`/order/${res.data.message}`)
                             } else errorHandler({data: res, errorText: 'Ошибка создания заказа'});
                         })
@@ -107,20 +107,28 @@ const OrderPage: React.FC = () => {
             setTotalPrice(totalPriceCalculation())
         }
     }, [cart])
-
     React.useEffect(() => {
         if (totalPrice < 599) {
             setErrorText({text: 'Сумма заказа от 599 рублей!', disabled: true});
-        } else if (!((userInfo.phone && userInfo.username) || (phoneNoAuth.length && /^\+\d{11}$/.test(phoneNoAuth)))) {
-            setErrorText({text: 'Заполните личные данные!', disabled: true} );
+        } else if (userInfo.email) {
+            if (!(userInfo.phone && userInfo.username && userInfo.email)) {
+                setErrorText({text: 'Заполните личные данные!', disabled: true});
+            } else if (!address?.value) {
+                setErrorText({text: 'Вы не указали адрес доставки!', disabled: true});
+            } else {
+                setErrorText({text: '', disabled: false});
+            }
+        } else {
+            if (!(phoneNoAuth.length && /^\+\d{11}$/.test(phoneNoAuth))) {
+                setErrorText({text: 'Заполните личные данные!', disabled: true});
+            } else if (!address?.value) {
+                setErrorText({text: 'Вы не указали адрес доставки!', disabled: true});
+            } else {
+                setErrorText({text: '', disabled: false});
+            }
+        }
+    }, [totalPrice, userInfo.phone, userInfo.email, phoneNoAuth, address.value]);
 
-        } else if (!address?.value) {
-            setErrorText({text: 'Вы не указали адрес доставки!', disabled: true});
-
-        } else setErrorText({text: '', disabled: false});
-
-
-    }, [totalPrice, userInfo.phone, userInfo.email, phoneNoAuth, address.value])
 
 
     return (
